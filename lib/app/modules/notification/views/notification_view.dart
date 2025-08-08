@@ -11,7 +11,7 @@ class NotificationView extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: DataColors.bg,
+          backgroundColor: AppColors.bg,
           body: Padding(
             padding: EdgeInsets.only(top: 15.sp),
             child: Column(
@@ -22,7 +22,7 @@ class NotificationView extends GetView<NotificationController> {
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: DataColors.white),
+                        color: AppColors.white),
                   ),
                 ),
               ],
@@ -36,7 +36,7 @@ class NotificationView extends GetView<NotificationController> {
                   topLeft: Radius.circular(30.sp),
                   topRight: Radius.circular(30.sp),
                 ),
-                color: DataColors.white),
+                color: AppColors.white),
             child: Column(
               children: [
                 Padding(
@@ -45,7 +45,7 @@ class NotificationView extends GetView<NotificationController> {
                     "assets/images/datatidakada.png",
                     height: 120.sp,
                     width: 120.sp,
-                    color: DataColors.bg,
+                    color: AppColors.bg,
                   ),
                 ),
                 Padding(
@@ -55,7 +55,7 @@ class NotificationView extends GetView<NotificationController> {
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: DataColors.grey),
+                        color: AppColors.grey),
                   ),
                 )
               ],

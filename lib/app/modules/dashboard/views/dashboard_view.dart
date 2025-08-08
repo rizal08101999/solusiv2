@@ -3,75 +3,127 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/ph.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:solusi/app/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:solusi/app/modules/home/views/home_view.dart';
-import 'package:solusi/app/modules/menu/views/menu_view.dart';
-import 'package:solusi/app/modules/notification/views/notification_view.dart';
 import 'package:solusi/app/modules/profile/views/profile_views.dart';
 import 'package:solusi/core/colors.dart';
+
+const tabBarItem = {
+  "Beranda": IconsaxPlusLinear.home_1,
+  "Menu": IconsaxPlusBold.category,
+  "Profil": IconsaxPlusLinear.user,
+};
+
+const tabBarItembold = {
+  "Beranda": IconsaxPlusBold.home_1,
+  "Menu": IconsaxPlusBold.category,
+  "Profil": IconsaxPlusBold.user,
+};
 
 class DashboardView extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Obx(
-          () => IndexedStack(
-            index: controller.currentNavbarIndex.value,
-            children: [
-              HomeView(),
-              MenuView(),
-              NotificationView(),
-              ProfileView()
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: null,
+      extendBody: true,
+      body: Obx(
+        () => IndexedStack(
+          index: controller.currentNavbarIndex.value,
+          children: [
+            HomeView(),
+            SizedBox.shrink(),
+            ProfileView()
+          ],
         ),
-        bottomNavigationBar: Obx(
-          () => Container(
-            height: 90.sp,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.sp),
-                topRight: Radius.circular(20.sp)
-              ),
-              color: DataColors.bg
-            ),
-            child: SalomonBottomBar(
-              // itemPadding: EdgeInsets.only(bottom: 10.sp, left: 20.sp, right: 20.sp, top: 6.sp),
-              margin: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 25.sp),             
-                currentIndex: controller.currentNavbarIndex.value,
-                onTap: (index) => controller.selectIndex(index),
-                items: [
-                  SalomonBottomBarItem(
-                    icon: Icon(Icons.dashboard_rounded, size: 28.sp, color: DataColors.white),
-                    title: const Text("Home"),
-                    selectedColor: DataColors.white,
-                  ),
-                  SalomonBottomBarItem(
-                    icon: Iconify(Ph.stack_bold, size: 28.sp, color: DataColors.white),
-                    activeIcon: Iconify(Ph.stack_bold, color: DataColors.white, size: 28.sp,),
-                    title: const Text("Menu"),
-                    selectedColor: DataColors.white,
-                  ),
-                  SalomonBottomBarItem(
-                    icon: Icon(Icons.notifications_none, size: 28.sp, color: DataColors.white),
-                    activeIcon: Icon(Icons.notifications_none, size: 28.sp, color: DataColors.white,),
-                    title: const Text("Notifikasi"),
-                    selectedColor: DataColors.white,
-                  ),
-                  SalomonBottomBarItem(
-                    icon: Icon(Icons.account_circle, size: 28.sp, color: DataColors.white),
-                    title: const Text("Profil"),
-                    selectedColor: DataColors.white,
-                  ),
-                ]),
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.only(top: 30.sp, bottom: 10.sp, left: 20.sp, right: 20.sp),
+        child: Row(
+          spacing: 85,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            tabBarItem.length,
+            (index) => buildbottomnavbar(index),
           ),
         ),
       ),
+
     );
   }
+
+  Widget buildbottomnavbar(int index) {
+    return Obx(() {
+      Widget iconWidget;
+
+      if (index == 1) {
+        // Icon bulat dengan gradient untuk index ke-2
+        iconWidget = Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                AppColors.gradient3,
+                AppColors.gradient4,
+              ],
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+            ),
+          ),
+          child: Icon(
+            controller.currentNavbarIndex.value == index
+                ? tabBarItembold.values.elementAt(index)
+                : tabBarItem.values.elementAt(index),
+            size: 24,
+            color: AppColors.white,
+          ),
+        );
+      } else {
+        // Icon biasa untuk index lainnya
+        iconWidget = Icon(
+          controller.currentNavbarIndex.value == index
+              ? tabBarItembold.values.elementAt(index)
+              : tabBarItem.values.elementAt(index),
+          size: 28,
+          color: controller.currentNavbarIndex.value == index
+              ? AppColors.black4
+              : AppColors.grey2,
+        );
+      }
+
+      // Konten utama untuk setiap item navbar
+      Widget content = Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          iconWidget,
+          const SizedBox(height: 5),
+          Text(
+            tabBarItem.keys.elementAt(index),
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontFamily: controller.currentNavbarIndex.value == index
+                  ? 'SemiBold'
+                  : 'DMSans',
+              color: controller.currentNavbarIndex.value == index
+                  ? AppColors.black4
+                  : AppColors.grey2,
+            ),
+          ),
+        ],
+      );
+
+      return InkWell(
+        onTap: () {
+          controller.selectIndex(index);
+        },
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        child: Transform.translate(
+          offset: index == 1 ? const Offset(0, -10) : Offset.zero,
+          child: content,
+        ),
+      );
+    });
+  }
+
 }

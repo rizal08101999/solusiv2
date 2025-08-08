@@ -1,0 +1,3 @@
+class AbsensiModel {
+  // TODO: Model
+}

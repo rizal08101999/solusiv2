@@ -3,20 +3,27 @@
 import 'package:get/get.dart';
 import 'package:solusi/app/modules/dashboard/bindings/dashboard_binding.dart';
 import 'package:solusi/app/modules/dashboard/views/dashboard_view.dart';
-import 'package:solusi/app/modules/login/bindings/login_binding.dart';
 import 'package:solusi/app/modules/login/views/login_view.dart';
-import 'package:solusi/app/modules/menu/bindings/absensi_binding.dart';
-import 'package:solusi/app/modules/menu/bindings/biodata_binding.dart';
-import 'package:solusi/app/modules/menu/bindings/jadwal_binding.dart';
-import 'package:solusi/app/modules/menu/bindings/pkwt_binding.dart';
-import 'package:solusi/app/modules/menu/bindings/riwayat_binding.dart';
-import 'package:solusi/app/modules/menu/views/component/absensi_view.dart';
-import 'package:solusi/app/modules/menu/views/component/biodata_view.dart';
-import 'package:solusi/app/modules/menu/views/component/jadwal_view.dart';
-import 'package:solusi/app/modules/menu/views/component/pkwt_view.dart';
-import 'package:solusi/app/modules/menu/views/component/riwayat_view.dart';
+import 'package:solusi/app/modules/overtime/controller/overtime_controller.dart';
+import 'package:solusi/app/modules/overtime/view/overtime_views.dart';
 import 'package:solusi/app/modules/splash/bindings/splash_binding.dart';
 import 'package:solusi/app/modules/splash/views/splash_view.dart';
+
+import '../modules/absensi/controller/absensi_controller.dart';
+import '../modules/absensi/view/absensi_views.dart';
+import '../modules/biodata/controller/biodata_controller.dart';
+import '../modules/biodata/view/biodata_views.dart';
+import '../modules/employee/controller/employee_controller.dart';
+import '../modules/employee/view/employee_views.dart';
+import '../modules/history/controller/history_controller.dart';
+import '../modules/history/view/history_views.dart';
+import '../modules/login/controllers/login_controller.dart';
+import '../modules/pkwt/controller/pkwt_controller.dart';
+import '../modules/pkwt/view/pkwt_views.dart';
+import '../modules/schedule/controller/schedule_controller.dart';
+import '../modules/schedule/view/schedule_views.dart';
+import '../modules/sp/controller/sp_controller.dart';
+import '../modules/sp/view/sp_views.dart';
 
 part 'app_routes.dart';
 
@@ -30,49 +37,88 @@ class AppPages {
       name: Path.SPLASH,
       page: () => SplashView(),
       binding: SplashBinding(),
-      transition: Transition.downToUp
     ),
     GetPage(
       name: Path.LOGIN,
       page: () => LoginView(),
-      binding: LoginBinding(),
-      transition: Transition.downToUp
+      binding: BindingsBuilder.put(() => LoginController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
     GetPage(
       name: Path.DASHBOARD,
       page: () => DashboardView(),
       binding: DashboardBinding(),
-      transition: Transition.downToUp
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
     GetPage(
       name: Path.BIODATA,
-      page: () => BiodataView(),
-      binding: BiodataBinding(),
-      transition: Transition.downToUp
+      page: () => BiodataViews(),
+      binding: BindingsBuilder.put(() => BiodataController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
+    ),
+    GetPage(
+      name: Path.EMPLOYEE,
+      page: () => EmployeeViews(),
+      binding: BindingsBuilder(() {
+        Get.put(EmployeeController());
+        Get.put(BiodataController());
+        Get.put(SpController());
+        Get.put(PkwtController());
+      }),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
     GetPage(
       name: Path.JADWAL,
-      page: () => JadwalView(),
-      binding: JadwalBinding(),
-      transition: Transition.downToUp
+      page: () => ScheduleViews(),
+      binding: BindingsBuilder.put(() => ScheduleController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
     GetPage(
       name: Path.PKWT,
-      page: () => PKWTView(),
-      binding: PkwtBinding(),
-      transition: Transition.downToUp
+      page: () => PkwtViews(),
+      binding: BindingsBuilder.put(() => PkwtController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
     GetPage(
       name: Path.ABSENSI,
-      page: () => AbsensiView(),
-      binding: AbsensiBinding(),
-      transition: Transition.downToUp
+      page: () => AbsensiViews(),
+      binding: BindingsBuilder.put(() => AbsensiController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
     GetPage(
       name: Path.RIWAYAT,
-      page: () => RiwayatView(),
-      binding: RiwayatBinding(),
-      transition: Transition.downToUp
+      page: () => HistoryViews(),
+      binding: BindingsBuilder.put(() => HistoryController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
+    ),
+    GetPage(
+      name: Path.SURAT_PERINGATAN,
+      page: () => SpViews(),
+      binding: BindingsBuilder.put(() => SpController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
+    ),
+    GetPage(
+      name: Path.OVERTIME,
+      page: () => OvertimeViews(),
+      binding: BindingsBuilder.put(() => OvertimeController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
+    ),
+    GetPage(
+      name: Path.LEAVE,
+      page: () => OvertimeViews(),
+      binding: BindingsBuilder.put(() => OvertimeController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
     ),
   ];
 }

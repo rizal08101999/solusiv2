@@ -3,177 +3,275 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:solusi/app/modules/login/controllers/login_controller.dart';
-import 'package:solusi/app/routes/app_pages.dart';
 import 'package:solusi/core/colors.dart';
 
 class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(
-            left: 20.sp, right: 20.sp, bottom: 20.sp, top: 50.sp),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 20.sp),
-                child: Center(
-                  child: Image.asset(
-                    "assets/images/vector_login.png",
-                    height: 350.sp,
-                    width: 350.sp,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 30.sp),
-                child: Text(
-                  "Login",
-                  style: TextStyle(
-                      fontSize: 24.sp,
-                      fontFamily: 'Poppins-ExtraBold',
-                      color: DataColors.black),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5.sp),
-                child: Text(
-                  "Silahkan login dan gunakan akses anda dengan baik",
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: DataColors.black),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 15.sp),
-                child: TextFormField(
-                  autocorrect: false,
-                  controller: controller.usernameC,
-                  cursorColor: DataColors.grey900,
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: DataColors.black),
-                  decoration: InputDecoration(
-                    label: Text(
-                      "Username",
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: DataColors.black),
-                    ),
-                    labelStyle: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: DataColors.black),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.sp),
-                        borderSide: BorderSide(color: DataColors.grey100)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.sp),
-                        borderSide: BorderSide(color: DataColors.black.withOpacity(0.8))),
-                  ),
-                ),
-              ),
-              Obx(
-                () => Padding(
-                  padding: EdgeInsets.only(top: 15.sp),
-                  child: TextFormField(
-                    autocorrect: false,
-                    keyboardType: TextInputType.text,
-                    cursorColor: DataColors.grey900,
-                    controller: controller.passwordC,
-                    obscureText: controller.isVisible.value,
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: DataColors.black),
-                    decoration: InputDecoration(
-                      label: Text(
-                        "Password",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: DataColors.black),
-                      ),
-                      suffixIcon: InkWell(
-                        borderRadius: BorderRadius.circular(40.sp),
-                        onTap: () {
-                          if (controller.isVisible.isTrue) {
-                            controller.isVisible.value = false;
-                          } else {
-                            controller.isVisible.value = true;
-                          }
-                        },
-                        child: Obx(() => controller.isVisible.isTrue
-                            ? Padding(
-                                padding: EdgeInsets.only(right: 10.sp),
-                                child: Icon(
-                                  Icons.remove_red_eye_rounded,
-                                  size: 18.sp,
-                                ),
-                              )
-                            : Padding(
-                                padding: EdgeInsets.only(right: 10.sp),
-                                child: Icon(
-                                  Icons.visibility_off_rounded,
-                                  size: 18.sp,
-                                ),
-                              )),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.sp),
-                          borderSide: BorderSide(color: DataColors.grey100)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.sp),
-                          borderSide: BorderSide(
-                              color: DataColors.black.withOpacity(0.8))),
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.DASHBOARD);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(top: 30.sp),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
                   child: Container(
-                    padding: EdgeInsets.only(
-                        left: 15.sp, right: 25.sp, bottom: 10.sp, top: 10.sp),
-                    height: 60.sp,
-                    width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.sp),
-                        color: DataColors.greybutton),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/bg_login.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.logout_outlined,
-                          size: 22.sp,
-                          color: DataColors.white,
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Image.asset(
+                              'assets/images/vector_login.png',
+                              width: 350,
+                            ),
+                          ),
                         ),
-                        Text(
-                          "Login",
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: DataColors.white),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Selamat Datang",
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: AppColors.grey3,
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 24.sp,
+                                    fontFamily: 'DMSans',
+                                    color: AppColors.black2,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text:"Masuk dan mulai pekerjaanmu\nhari ini dengan ",
+                                      style: TextStyle(fontFamily: 'SemiBold'),
+                                    ),
+                                    TextSpan(
+                                      text: "SOLUSI.",
+                                      style: TextStyle(
+                                        fontFamily: 'Bold',
+                                        color: AppColors.primary2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox.shrink()
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.zero,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 11.9,
+                                  offset: Offset(0, 4),
+                                  color: Colors.black.withOpacity(0.08),
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              color: AppColors.grey4,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                              child: Column(
+                                spacing: 15,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Username
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15, bottom: 10, left: 10, right: 10),
+                                    child: Column(
+                                      spacing: 5,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Username",
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontFamily: 'SemiBold',
+                                            color: AppColors.black3,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          autocorrect: false,
+                                          controller: controller.usernameC,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.black3,
+                                          ),
+                                          decoration: InputDecoration(
+                                            hintText: "Masukkan Username",
+                                            hintStyle: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: AppColors.grey5,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: AppColors.grey5,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: AppColors.grey5,
+                                              ),
+                                            ),
+                                            prefixIcon: Icon(
+                                              IconsaxPlusLinear.profile,
+                                              color: AppColors.grey5,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Password
+                                  Obx(() => Padding(
+                                    padding: const EdgeInsets.only(left: 10, right: 10),
+                                    child: Column(
+                                      spacing: 5,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Password",
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontFamily: 'SemiBold',
+                                            color: AppColors.black3,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          autocorrect: false,
+                                          controller: controller.passwordC,
+                                          obscureText: controller.isVisible.value,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.black3,
+                                          ),
+                                          decoration: InputDecoration(
+                                            hintText: "Masukkan Password",
+                                            hintStyle: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: AppColors.grey5,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: AppColors.grey5,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: AppColors.grey5,
+                                              ),
+                                            ),
+                                            prefixIcon: Icon(
+                                              IconsaxPlusLinear.lock_1,
+                                              color: AppColors.grey5,
+                                            ),
+                                            suffixIcon: InkWell(
+                                              onTap: () {
+                                                controller.isVisible.toggle();
+                                              },
+                                              overlayColor: WidgetStateProperty.all(Colors.transparent),
+                                              child: Icon(
+                                                controller.isVisible.isTrue ? IconsaxPlusLinear.eye_slash : IconsaxPlusLinear.eye,
+                                                size: 20,
+                                                color: AppColors.grey5,
+                                              ),
+                                            )
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),),
+                                  Obx(() => Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: Center(
+                                      child: InkWell(
+                                        onTap: () {
+                                          controller.login();
+                                        },
+                                        overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                                        child: AnimatedContainer(
+                                        duration: Duration(milliseconds: 300),
+                                        width: controller.loading.isTrue ? 68 : MediaQuery.of(context).size.width,
+                                        padding: controller.loading.isTrue ? EdgeInsets.all(15) : EdgeInsets.symmetric(horizontal: 13, vertical: 20),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(999),
+                                          gradient: LinearGradient( 
+                                            colors: [
+                                              AppColors.gradient7,
+                                              AppColors.gradient8,
+                                            ],
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                          )
+                                        ),
+                                        child: controller.loading.isTrue
+                                            ? Center(
+                                                child: SizedBox(
+                                                  height: 40,
+                                                  width: 40,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors.white,
+                                                    strokeWidth: 4,
+                                                  ),
+                                                ),
+                                              )
+                                            : Padding(
+                                                padding: const EdgeInsets.only(bottom: 10),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Login",
+                                                    style: TextStyle(
+                                                      fontSize: 18.sp,
+                                                      fontFamily: 'SemiBold',
+                                                      color: AppColors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                      )
+                                      ),
+                                    ),
+                                  ),)
+                                  
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

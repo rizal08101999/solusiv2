@@ -1,0 +1,3 @@
+class SpModel {
+  // TODO: Model
+}

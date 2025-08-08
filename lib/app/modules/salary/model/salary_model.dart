@@ -1,0 +1,3 @@
+class SalaryModel {
+  // TODO: Model
+}

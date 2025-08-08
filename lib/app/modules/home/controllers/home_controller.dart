@@ -1,72 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:solusi/app/data/entities/absen.dart';
-import 'package:solusi/app/widgets/pop_up_load.dart';
-import 'package:solusi/core/colors.dart';
+import 'package:intl/intl.dart';
+import 'package:solusi/app/modules/home/model/home_model.dart';
+import 'package:solusi/app/repositorys/home_repositorys.dart';
+import 'package:solusi/core/local_db.dart';
 
 class HomeController extends GetxController {
-  final listabsensi = RxList<AbsensiEntity>();
   final loading = false.obs;
+  final homerepo = HomeRepositorys();
+  final absensi = RxList<DashboardEntity>();
+  final resume = RxList<DashboardEntity>();
+  final name = "".obs;
+  final company = "".obs;
+  final datenow = "".obs;
+  final monthnow = "".obs;
 
   @override
   void onInit() {
+    initialiaze();
     super.onInit();
-    Future.delayed(Duration.zero, initialiaze);
   }
 
   void initialiaze() async {
     loading.value = true;
-    Get.dialog(
-      barrierDismissible: false,
-      PopUpLoad(children: [
-        Column(
-          children: [
-            CircularProgressIndicator(
-              color: DataColors.grey,
-              strokeWidth: 4,
-            ),
-          ],
-        )
-      ])
-    );
-    final listabsen = [
-      AbsensiEntity(
-        id: "1", 
-        label: "Absen Masuk", 
-        date: "2024-01-23", 
-        timeIn: "13:30:02", 
-        timeOut: "", 
-        status: "Terlambat"
-      ),
-      AbsensiEntity(
-        id: "2", 
-        label: "Absen Keluar", 
-        date: "2024-01-23", 
-        timeIn: "13:30:02", 
-        timeOut: "16:50:00", 
-        status: "Pulang Duluan"
-      ),
-      AbsensiEntity(
-        id: "3", 
-        label: "Absen Masuk", 
-        date: "2024-01-24", 
-        timeIn: "07:00:00", 
-        timeOut: "", 
-        status: ""
-      ),
-      AbsensiEntity(
-        id: "4", 
-        label: "Absen Keluar", 
-        date: "2024-01-24", 
-        timeIn: "07:00:00", 
-        timeOut: "17:00:00", 
-        status: ""
-      ),
-    ];
-    Future.delayed(const Duration(milliseconds: 500)).then((value) {
-      listabsensi.assignAll(listabsen);
-      Get.back();
+    datenow.value = DateFormat('dd MMMM yyyy', 'id').format(DateTime.now());
+    monthnow.value = DateFormat('MMMM yyyy', 'id').format(DateTime.now());
+    final data = await homerepo.getresume();
+    name.value = LocalDB.user!.arrayActiveEmployee.nameEmployee;
+    company.value = LocalDB.user!.arrayActiveEmployee.nameCompany;
+    if (data.isNotEmpty) {
+      // Hilangkan duplikat berdasarkan label
+      final Map<String, DashboardEntity> uniqueMap = {
+        for (var item in data) item.label: item,
+      };
+      final uniqueList = uniqueMap.values.toList();
+
+      // Pisahkan berdasarkan label mengandung "absen"
+      final filteredabsensi = uniqueList
+          .where((item) => item.label.toLowerCase().contains('absen'))
+          .toList();
+
+      final filteredresume = uniqueList
+          .where((item) => !item.label.toLowerCase().contains('absen'))
+          .toList();
+      absensi.assignAll(filteredabsensi);
+      resume.assignAll(filteredresume);
+      debugPrint(absensi.toString());
+      debugPrint(resume.toString());
       loading.value = false;
-    },);
+    } else {
+      debugPrint("gagal mendapatkan data");
+      loading.value = false;
+    }
   }
+
 }

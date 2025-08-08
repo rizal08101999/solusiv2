@@ -1,108 +1,266 @@
 // ignore_for_file: use_key_in_widget_constructors,
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:solusi/app/data/entities/absen.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:solusi/app/modules/home/controllers/home_controller.dart';
 import 'package:solusi/core/colors.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Obx(() => controller.loading.isTrue ? 
-        const Scaffold(
-          body: SizedBox.shrink(),
-        ) : 
-        Scaffold(
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Obx(() {
+      return Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height ,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/bg_home.jpg'),
+                fit: BoxFit.fill
+            ),
+          ),
+          child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                width: double.infinity,
-                height: 220,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/bg_home.jpg'),
-                      fit: BoxFit.fill
-                  ),
-                ),
-                child: Column(
-                  spacing: 15,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              // Header
+              Padding(
+                padding: const EdgeInsets.only(top: 60, left: 20, right: 20, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60),
-                      child: Text(
-                        "Selamat Datang Di Aplikasi SOLUSI",
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w600
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        Text(
+                          "Selamat Datang,",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontFamily: 'Medium',
+                            color: AppColors.white
+                          ),
                         ),
+                        Text(
+                          "A.Badawi",
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontFamily: 'Bold',
+                            color: AppColors.white
+                          ),
+                        ),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 24,
+                      backgroundColor: AppColors.white,
+                      child: Icon(
+                        IconsaxPlusLinear.notification,
+                        color: AppColors.black2,
+                        size: 24,
                       ),
                     ),
-                    Text(
-                      "testing",
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.w600
-                      ),
-                    ),
-                    Text(
-                      "Dashboard berisi resume selama satu bulan aktif",
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600
-                      ),
-                    )
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                    child: Column(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.sp),
+                      topRight: Radius.circular(20.sp),
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: controller.loading.isTrue ? 30 : 40, horizontal: controller.loading.isTrue ? 5 : 15),
+                  child: FadeIn(
+                    duration: Duration(milliseconds: 550),
+                    child: controller.loading.isTrue ? 
+                    buildloading() :
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            "Resume",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontFamily: 'Poppins-Bold',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Absensi",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontFamily: 'SemiBold',
+                                color: AppColors.black
+                              ), 
                             ),
-                          ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(999),
+                                color: AppColors.grey6
+                              ),
+                              child: Text(
+                                controller.datenow.value,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Medium',
+                                  color: AppColors.black2
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                          padding: const EdgeInsets.only(top: 15, bottom: 25),
                           child: Column(
                             spacing: 15,
-                            children: [
-                              builditemresume(icon: IconsaxPlusLinear.login, title: "Absen Masuk", subtitle: "-"),
-                              builditemresume(icon: IconsaxPlusLinear.logout, title: "Absen Keluar", subtitle: "-"),
-                              builditemresume(icon: IconsaxPlusBold.note_1, title: "Total Tugas Saya", subtitle: "4 Data"),
-                              builditemresume(icon: IconsaxPlusLinear.user_octagon, title: "Total Izin/Cuti Menunggu Konfirmasi", subtitle: "0 Data"),
-                              builditemresume(icon: IconsaxPlusBold.tick_circle, title: "Total Izin/Cuti Terkonfirmasi", subtitle: "0 Data"),
-                              builditemresume(icon: IconsaxPlusLinear.user_square, title: "Total Lembur Menunggu Konfirmasi", subtitle: "0 Data"),
-                              builditemresume(icon: IconsaxPlusBold.tick_circle, title: "Total Izin Terkonfirmasi", subtitle: "0 Data"),
-                            ],
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(controller.absensi.length, (index) {
+                              final item = controller.absensi[index];
+                              return builditemresume(
+                                icon: IconData(int.parse(item.codeIcon), fontFamily: item.fontFamily, fontPackage: item.fontPackage), 
+                                title: item.label, 
+                                subtitle: item.value
+                              );
+                            },),
                           ),
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Resume",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontFamily: 'SemiBold',
+                                color: AppColors.black
+                              ), 
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(999),
+                                color: AppColors.grey6
+                              ),
+                              child: Text(
+                                controller.monthnow.value,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Medium',
+                                  color: AppColors.black2
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Expanded(
+                          child: GridView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.only(top: 10),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 15,
+                              crossAxisSpacing: 15,
+                              childAspectRatio: 3, // kamu bisa sesuaikan tinggi/lebar grid item
+                            ),
+                            itemCount: controller.resume.length, // ganti dengan datamu
+                            itemBuilder: (context, index) {
+                              final item = controller.resume[index];
+                              return builditemresume(
+                                icon: IconData(int.parse(item.codeIcon), fontFamily: item.fontFamily, fontPackage: item.fontPackage),
+                                title: item.label,
+                                subtitle: item.value.replaceAll(' Data',''),
+                              );
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
-      ) 
-      
+      );
+    },);
+  }
+
+  Widget buildloading() {
+    return Shimmer.fromColors(
+      baseColor: AppColors.grey6,
+      highlightColor: AppColors.white,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12,),
+          child: Column(
+            spacing: 15,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: Container(
+                  height: 45,
+                  width: 125,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: AppColors.grey6
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: Container(
+                  height: 180,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: AppColors.grey6
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: Container(
+                  height: 55,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: AppColors.grey6
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 350, // atau tinggi yang kamu sesuaikan
+                child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 10),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 15,
+                    childAspectRatio: 2,
+                  ),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: AppColors.grey6,
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -111,126 +269,50 @@ class HomeView extends GetView<HomeController> {
     required String title,
     required String subtitle,
   }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      spacing: 5,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontFamily: 'Medium',
+            color: AppColors.grey7
+          ),
+        ),
         Row(
-          spacing: 8,
+          spacing: 10,
           children: [
-            Icon(
-              icon,
-              size: 26,
-              color: DataColors.grey2,
+            ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [
+                  AppColors.gradient5,
+                  AppColors.gradient6
+                ], // Ganti dengan gradient kamu
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds),
+              blendMode: BlendMode.srcIn,
+              child: Icon(
+                icon,
+                size: 24,
+                color: Colors.white, // harus ada, tapi warnanya akan ditimpa oleh ShaderMask
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                      color: DataColors.black
-                    ),
-                  ),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontFamily: 'Poppins-Bold',
-                      color: subtitle == "-" ? DataColors.grey : DataColors.black
-                    ),
-                  )
-                ],
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontFamily: 'Bold',
+                color: subtitle == "-" ? AppColors.grey : AppColors.black
               ),
             )
           ],
         ),
-        Icon(
-          IconsaxPlusLinear.arrow_right,
-          size: 24,
-          color: DataColors.grey2,
-        )
       ],
     );
   }
 
-  builCardAbsen(AbsensiEntity item) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 20.sp, left: 0.sp),
-              child: Icon(
-                item.label == "Absen Masuk" ? Icons.login_rounded : Icons.logout_rounded,
-                size: 24.sp,
-                color: DataColors.bg,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 0.sp, left: 10.sp),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: DataColors.black),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.sp),
-                    child: Text(
-                      item.date,
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: DataColors.black),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-        item.status != "" ?
-        Padding(
-          padding: EdgeInsets.only(top: 0.sp),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                item.label == "Absen Masuk" ? item.timeIn : item.timeOut,
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontFamily: 'Poppins-Bold',
-                    color: DataColors.black),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5.sp),
-                child: Text(
-                  item.status,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: item.status == "Terlambat" || item.status == "Pulang Duluan" ? DataColors.red700 : DataColors.black),
-                ),
-              )
-            ],
-          ),
-        ) : Text(
-          item.label == "Absen Masuk" ? item.timeIn : item.timeOut,
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontFamily: 'Poppins-Bold',
-              color: item.status == "Terlambat" || item.status == "Pulang Duluan" ? DataColors.red700 : DataColors.black),
-        ),
-      ],
-    );
-  }
+  
 }

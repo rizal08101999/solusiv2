@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Kami membutuhkan akses lokasi untuk memberikan layanan yang sesuai dengan lokasi Anda.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Kami memerlukan akses lokasi meskipun aplikasi sedang tidak digunakan.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Lokasi digunakan untuk pelacakan latar belakang dan saat aplikasi aktif.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+	<string>location</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

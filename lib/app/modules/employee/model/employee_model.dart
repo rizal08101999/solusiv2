@@ -1,0 +1,3 @@
+class EmployeeModel {
+  // TODO: Model
+}
