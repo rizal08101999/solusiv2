@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,12 +26,33 @@ class AbsensiController extends GetxController {
   void initialiaze() async {
     Get.dialog(PopUpLoad());
     datenow.value = DateFormat('EEEE, d MMMM yyyy', 'id').format(DateTime.now());
-    var status = await Permission.location.status;
-    if (status.isDenied) {
-      var request = await Permission.location.request();
-      if (request.isGranted) {
+    if(Platform.isIOS){
+      var status = await Permission.locationWhenInUse.status;
+      debugPrint("status Permission Location IOS : ${status.toString()}");
+      if (status.isDenied) {
+        var request = await Permission.locationWhenInUse.request();
+        if (request.isGranted) {
+          var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          positionnow.value = "${position.latitude}, ${position.longitude}";
+          List<Placemark> placemarks = await placemarkFromCoordinates(
+            position.latitude,
+            position.longitude,
+          );
+
+          if (placemarks.isNotEmpty) {
+            debugPrint("tidak ksong");
+            Placemark place = placemarks.first;
+            locationnow.value = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}";
+          } else {
+            debugPrint("ksong");
+            locationnow.value = "-";
+          }
+        } else {
+          debugPrint("Permission denied");
+        }
+      } else {
         var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        positionnow.value = "${position.latitude}, ${position.longitude}";
+        positionnow.value = "${position.latitude}, ${position.longitude}}";
         List<Placemark> placemarks = await placemarkFromCoordinates(
           position.latitude,
           position.longitude,
@@ -41,27 +64,49 @@ class AbsensiController extends GetxController {
           locationnow.value = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}";
         } else {
           debugPrint("ksong");
-          locationnow.value = "-";
         }
-      } else {
-        debugPrint("Permission denied");
       }
     } else {
-      var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      positionnow.value = "${position.latitude}, ${position.longitude}}";
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
+      var status = await Permission.location.status;
+      if (status.isDenied) {
+        var request = await Permission.location.request();
+        if (request.isGranted) {
+          var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          positionnow.value = "${position.latitude}, ${position.longitude}";
+          List<Placemark> placemarks = await placemarkFromCoordinates(
+            position.latitude,
+            position.longitude,
+          );
 
-      if (placemarks.isNotEmpty) {
-        print("tidak ksong");
-        Placemark place = placemarks.first;
-        locationnow.value = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}";
+          if (placemarks.isNotEmpty) {
+            debugPrint("tidak ksong");
+            Placemark place = placemarks.first;
+            locationnow.value = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}";
+          } else {
+            debugPrint("ksong");
+            locationnow.value = "-";
+          }
+        } else {
+          debugPrint("Permission denied");
+        }
       } else {
-        print("ksong");
+        var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        positionnow.value = "${position.latitude}, ${position.longitude}}";
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          debugPrint("tidak ksong");
+          Placemark place = placemarks.first;
+          locationnow.value = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}";
+        } else {
+          debugPrint("ksong");
+        }
       }
     }
+    
     Get.back();
   }
 

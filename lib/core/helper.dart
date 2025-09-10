@@ -5,7 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:solusi/core/local_db.dart';
 
+import 'package:local_auth/local_auth.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
 final log = Logger();
+final LocalAuthentication auth = LocalAuthentication();
 const baseUrl = "https://lotusku.com/apimobile/";
 
 Future<T?> handleApiResponse<T>({
@@ -177,6 +183,83 @@ Future<void> stopTrackingDelivery() async {
   } on PlatformException catch (e) {
     print("Failed to stopped tracking: ${e.message}");
   }
+}
+
+Future<void> authenticate() async {
+  try {
+    bool canCheckBiometrics = await auth.canCheckBiometrics;
+    bool isDeviceSupported = await auth.isDeviceSupported();
+
+    if (canCheckBiometrics || isDeviceSupported) {
+      final didAuthenticate = await auth.authenticate(
+        localizedReason: 'Harap verifikasi identitas Anda',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+        ),
+      );
+
+      if (didAuthenticate) {
+        print("✅ Autentikasi berhasil");
+      } else {
+        print("❌ Autentikasi gagal");
+      }
+    } else {
+      print("⚠️ Device tidak support biometrik");
+    }
+  } catch (e) {
+    print("Error: $e");
+  }
+}
+
+
+Future<List<HolidayEntity>> fetchHolidays() async {
+  List<HolidayEntity> result = [];
+  try {
+    var response = await http.get(Uri.parse("https://api-harilibur.vercel.app/api"));
+    print("Raw Response Body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body); // Decode JSON
+
+      // Pastikan data adalah List
+      if (data is List) {
+        LocalDB.holiday = List.from(data).map((e) => HolidayEntity.fromJson(e)).toList();
+        result = List.from(data).map((e) => HolidayEntity.fromJson(e)).toList();
+        print(result);
+        return result; // Hanya ambil yang tidak null
+      } else {
+        print("Unexpected response format: $data");
+      }
+    }
+  } catch (e) {
+    print("Error fetching holidays: $e");
+  }
+  return [];
+}
+
+class HolidayEntity {
+    String holidayDate;
+    String holidayName;
+    bool isNationalHoliday;
+
+    HolidayEntity({
+        required this.holidayDate,
+        required this.holidayName,
+        required this.isNationalHoliday,
+    });
+
+    factory HolidayEntity.fromJson(Map<String, dynamic> json) => HolidayEntity(
+        holidayDate: json["holiday_date"],
+        holidayName: json["holiday_name"],
+        isNationalHoliday: json["is_national_holiday"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "holiday_date": holidayDate,
+        "holiday_name": holidayName,
+        "is_national_holiday": isNationalHoliday,
+    };
 }
 
 

@@ -18,6 +18,14 @@ abstract class Routes {
   static const LEAVE = Path.LEAVE;
   static const OVERTIME = Path.OVERTIME;
   static const EMPLOYEE = Path.EMPLOYEE;
+  static const ADDOVERTIME = Path.ADDOVERTIME;
+  static const ADDLEAVE = Path.ADDLEAVE;
+  static const ADDTASK = Path.ADDTASK;
+  static const TASK = Path.TASK;
+  static const SALARY = Path.SALARY;
+  static const KPI = Path.KPI;
+  static const DETAILTASK = Path.DETAILTASK;
+  static const TRANSFERTASK = Path.TRANSFERTASK;
 }
 
 abstract class Path {
@@ -37,4 +45,12 @@ abstract class Path {
   static const LEAVE = '/leave';
   static const OVERTIME = '/overtime';
   static const EMPLOYEE = '/employee';
+  static const TASK = '/task';
+  static const SALARY = '/salary';
+  static const KPI = '/kpi';
+  static const ADDOVERTIME = '/add-overtime';
+  static const ADDLEAVE = '/add-leave';
+  static const ADDTASK = '/add-task';
+  static const DETAILTASK = '/detail-task';
+  static const TRANSFERTASK = '/transfer-task';
 }

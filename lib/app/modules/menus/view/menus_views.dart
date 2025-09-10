@@ -128,7 +128,7 @@ class MenusViews extends GetView<MenusController> {
                 icon: 'ic_overtime',
                 onTap: () {
                   Get.back();
-                  Get.snackbar("Info", "Coming Soon");
+                  Get.toNamed(Routes.OVERTIME);
                 },
                 color: [
                   AppColors.grey5,
@@ -140,7 +140,7 @@ class MenusViews extends GetView<MenusController> {
                 icon: 'ic_leave',
                 onTap: () {
                   Get.back();
-                  Get.snackbar("Info", "Coming Soon");
+                  Get.toNamed(Routes.LEAVE);
                 },
                 color: [
                   AppColors.grey5,
@@ -157,7 +157,7 @@ class MenusViews extends GetView<MenusController> {
                 icon: 'ic_task',
                 onTap: () {
                   Get.back();
-                  Get.snackbar("Info", "Coming Soon");
+                  Get.toNamed(Routes.TASK);
                 },
                 color: [
                   AppColors.orange,
@@ -169,7 +169,7 @@ class MenusViews extends GetView<MenusController> {
                 icon: 'ic_sallary',
                 onTap: () {
                   Get.back();
-                  Get.snackbar("Info", "Coming Soon");
+                  Get.toNamed(Routes.SALARY);
                 },
                 color: [
                   AppColors.orange,
@@ -181,7 +181,7 @@ class MenusViews extends GetView<MenusController> {
                 icon: 'ic_kpi',
                 onTap: () {
                   Get.back();
-                  Get.snackbar("Info", "Coming Soon");
+                  Get.toNamed(Routes.KPI);
                 },
                 color: [
                   AppColors.orange,

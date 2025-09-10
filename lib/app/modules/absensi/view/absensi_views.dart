@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/colors.dart';
+import '../../../../core/helper.dart';
 import '../controller/absensi_controller.dart';
 
 class AbsensiViews extends GetView<AbsensiController> {
@@ -296,7 +297,7 @@ class AbsensiViews extends GetView<AbsensiController> {
                           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [
+                            colors: [
                                 AppColors.gradientnavbar2,
                                 AppColors.gradientnavbar,
                               ],
@@ -461,34 +462,40 @@ class AbsensiViews extends GetView<AbsensiController> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.h),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.gradientnavbar2,
-                      AppColors.gradientnavbar,
+              child: InkWell(
+                onTap: () {
+                  authenticate();
+                },
+                overlayColor: WidgetStateProperty.all(Colors.transparent),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.h),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.gradientnavbar2,
+                        AppColors.gradientnavbar,
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 3.4,
+                        color: AppColors.black.withOpacity(0.25),  
+                        offset: Offset(0, 4)
+                      )
                     ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+                    borderRadius: BorderRadius.circular(999),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3.4,
-                      color: AppColors.black.withOpacity(0.25),  
-                      offset: Offset(0, 4)
-                    )
-                  ],
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: Center(
-                  child: Text(
-                    "Lakukan Absensi",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontFamily: 'SemiBold',
-                      color: AppColors.white
+                  child: Center(
+                    child: Text(
+                      "Lakukan Absensi",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontFamily: 'SemiBold',
+                        color: AppColors.white
+                      ),
                     ),
                   ),
                 ),

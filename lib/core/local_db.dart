@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:solusi/core/helper.dart';
 
 import '../app/modules/login/models/login_models.dart';
 
@@ -38,6 +39,24 @@ class LocalDB {
     } else {
       return null;
     }
+  }
+
+  static set holiday(List<HolidayEntity>? holidays) {
+    if (holidays != null) {
+      final jsonList = holidays.map((e) => e.toJson()).toList();
+      _prefs!.setString('holiday', jsonEncode(jsonList));
+    } else {
+      _prefs!.remove('holiday');
+    }
+  }
+
+  static List<HolidayEntity>? get holiday {
+    final holidayString = _prefs!.getString('holiday');
+    if (holidayString != null) {
+      final List<dynamic> decoded = jsonDecode(holidayString);
+      return decoded.map((e) => HolidayEntity.fromJson(e)).toList();
+    }
+    return null;
   }
 
   static void setFirstTime(bool isFirstTime) {

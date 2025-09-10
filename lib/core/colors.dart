@@ -18,6 +18,12 @@ abstract class AppColors {
   static final Color gradientbrown2 = HexColor("#CFC2B9");
   static final Color gradientnavbar = HexColor("#A8A8A8");  
   static final Color gradientnavbar2 = HexColor("#424242");
+  static final Color gradientorange = HexColor("#F66C2E");
+  static final Color gradientorange2 = HexColor("#EFA25E");
+  static final Color gradientred = HexColor("#D83D3D");
+  static final Color gradientred2 = HexColor("#F6A6A6");
+  static final Color gradientblue = HexColor("#3D7BD8");
+  static final Color gradientblue2 = HexColor("#49469E");
   static final Color black = HexColor("#000000");
   static final Color black2 = HexColor("#292929");
   static final Color black3 = HexColor("#343A40");
@@ -26,6 +32,9 @@ abstract class AppColors {
   static final Color black6 = HexColor("#494949");
   static final Color black7 = HexColor("#313131");
   static final Color black8 = HexColor("#383838");
+  static final Color black9 = HexColor("#292D32");
+  static final Color black10 = HexColor("#585757");
+  static final Color black11 = HexColor("#5C5C5C");
   static final Color white = HexColor("#FFFFFF");
   static final Color bgriwayat = HexColor('#F7F9FC');
   static final Color grey = HexColor("#546E7A");
@@ -45,6 +54,12 @@ abstract class AppColors {
   static final Color grey16 = HexColor("#F3F3F3");
   static final Color grey17 = HexColor("#A0A0A0");
   static final Color grey18 = HexColor("#E7E7E7");
+  static final Color grey19 = HexColor("#686868");
+  static final Color grey20 = HexColor("#E9E6E6");
+  static final Color grey21 = HexColor("#666666");
+  static final Color grey22 = HexColor("#ECECEC");
+  static final Color grey23 = HexColor("#D1D1D1");
+  static final Color grey24 = HexColor("#7C7C7C");
   static final Color greybutton = HexColor("#546F7A");
   static final Color grey100 = HexColor("#CFD8DC");
   static final Color grey900 = HexColor("#263238");
@@ -58,6 +73,7 @@ abstract class AppColors {
   static final Color headertable = HexColor("#F7F8FD");
   static final Color bottomtable = HexColor("#ECF0FB");
   static final Color green = HexColor("#004C42");
+  static final Color green2 = HexColor("#2CA603");
   static final Color bg = HexColor("#455A64");
   static final Color bg2 = HexColor("#F4F6FB");
 
@@ -72,4 +88,27 @@ abstract class ColorsSchedule{
   static final Color indigo = HexColor("#E6EFFF");
   static final Color teal = HexColor("#E6F7FF");
 
+}
+
+abstract class ColorsGradiet{
+  static final Color orange1 = HexColor("#FFA229");
+  static final Color orange2 = HexColor("#B84D14");
+  static final Color blue = HexColor("#3D7BD8");
+  static final Color blue2 = HexColor("#49469E");
+  static final Color green = HexColor("#50B38D");
+  static final Color green2 = HexColor("#98B9E4");
+  static final Color red = HexColor("#B35050");
+  static final Color red2 = HexColor("#E49898");
+  static final Color white = HexColor("#E9E9E9");
+}
+
+abstract class ColorsStatus{
+  static final Color orangetext = HexColor("#E4963C");
+  static final Color orangebg = HexColor("#FFF9E6");
+  static final Color bluetext = HexColor("#5A61A4");
+  static final Color bluebg = HexColor("#E6F7FF");
+  static final Color greentext = HexColor("#5AA45C");
+  static final Color greenbg = HexColor("#EEFFE6");
+  static final Color redtext = HexColor("#C24343");
+  static final Color redbg = HexColor("#FFE6E6");
 }

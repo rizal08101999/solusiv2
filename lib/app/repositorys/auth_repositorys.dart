@@ -24,7 +24,7 @@ class AuthRepositorys {
           "username": username,
           "password": password,
           "firebase_token": "",
-          "device_id": LocalDB.getDeviceId() ?? ""
+          "device_id": "qwertyuiop"
         },
       );
       final json = response.data is String ? jsonDecode(response.data) : response.data;

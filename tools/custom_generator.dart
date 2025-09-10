@@ -13,13 +13,13 @@ void main(List<String> args) {
 
   for (final name in moduleNames) {
     final path = 'lib/app/modules/$name';
-    final controllerPath = '$path/controller';
-    final viewPath = '$path/view';
+    final controllerPath = '$path/controllers';
+    final viewPath = '$path/views';
 
     Directory(controllerPath).createSync(recursive: true);
     Directory(viewPath).createSync(recursive: true);
 
-    File('$controllerPath/${name}_controller.dart').writeAsStringSync('''
+    File('$controllerPath/${name}_controllers.dart').writeAsStringSync('''
 import 'package:get/get.dart';
 
 class ${_toPascalCase(name)}Controller extends GetxController {
@@ -30,7 +30,7 @@ class ${_toPascalCase(name)}Controller extends GetxController {
     File('$viewPath/${name}_views.dart').writeAsStringSync('''
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/${name}_controller.dart';
+import '../controller/${name}_controllers.dart';
 
 class ${_toPascalCase(name)}Views extends GetView<${_toPascalCase(name)}Controller> {
   const ${_toPascalCase(name)}Views({super.key});
