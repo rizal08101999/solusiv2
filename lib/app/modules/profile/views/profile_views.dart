@@ -8,6 +8,8 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:solusi/app/modules/profile/controllers/profile_controller.dart';
 import 'package:solusi/core/colors.dart';
 
+import '../../../routes/app_pages.dart';
+
 class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
@@ -146,7 +148,9 @@ class ProfileView extends GetView<ProfileController> {
           buildProfileItem(
             'Informasi Akun',
             IconsaxPlusBold.warning_2,
-            null
+            () {
+              Get.toNamed(Routes.INFOACCOUNT);
+            },
           ),
           Divider(color: AppColors.grey8, height: 1.h),
           buildProfileItem(
@@ -156,15 +160,11 @@ class ProfileView extends GetView<ProfileController> {
           ),
           Divider(color: AppColors.grey8, height: 1.h),
           buildProfileItem(
-            'Deviceid ${controller.deviceId.value}',
-            IconsaxPlusBold.info_circle,
-            null
-          ),
-          Divider(color: AppColors.grey8, height: 1.h),
-          buildProfileItem(
             'Logout',
             IconsaxPlusBold.logout,
-            null
+            () {
+              controller.out();
+            },
           ),
         ],
       ),
@@ -177,32 +177,43 @@ class ProfileView extends GetView<ProfileController> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 15.h),
         child: Row(
-          spacing: 20.w,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ShaderMask(
-              shaderCallback: (bounds) => LinearGradient(
-                colors: [
-                  AppColors.gradient4,
-                  AppColors.gradient3
-                ], // Ganti dengan gradient kamu
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ).createShader(bounds),
-              blendMode: BlendMode.srcIn,
-              child: Icon(
-                icon,
-                size: 28,
-                color: Colors.white, // harus ada, tapi warnanya akan ditimpa oleh ShaderMask
-              ),
+            Row(
+              spacing: 20.w,
+              children: [
+                ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [
+                      AppColors.gradient4,
+                      AppColors.gradient3
+                    ], // Ganti dengan gradient kamu
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ).createShader(bounds),
+                  blendMode: BlendMode.srcIn,
+                  child: Icon(
+                    icon,
+                    size: 28,
+                    color: Colors.white, // harus ada, tapi warnanya akan ditimpa oleh ShaderMask
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: AppColors.black5,
+                    fontFamily: 'Medium',
+                  ),
+                ),
+              ],
             ),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColors.black5,
-                fontFamily: 'Medium',
-              ),
-            ),
+            if(title == "Informasi Akun")
+            Icon(
+              IconsaxPlusLinear.arrow_right_3,
+              size: 20,
+              color: AppColors.grey7
+            )
           ],
         ),
       ),

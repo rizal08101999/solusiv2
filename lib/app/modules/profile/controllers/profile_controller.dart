@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
+import 'package:solusi/app/routes/app_pages.dart';
+import 'package:solusi/app/widgets/pop_up_load.dart';
 import 'package:solusi/core/local_db.dart';
 
 import '../../../../core/helper.dart';
+import '../../../widgets/confirmationlogout.dart';
 
 class ProfileController extends GetxController {
   final username = "A.Badawi".obs;
@@ -20,6 +23,30 @@ class ProfileController extends GetxController {
     username.value = LocalDB.user!.arrayActiveEmployee.nameEmployee;
     company.value = LocalDB.user!.arrayActiveEmployee.nameCompany;
     deviceId.value = LocalDB.getDeviceId() ?? "belum ada device id";
+  }
+
+  void out() {
+    Get.dialog(
+      barrierDismissible: false,
+      ConfirmationLogout(
+        onPressedaccept: () async {
+          Get.back();
+          Get.dialog(PopUpLoad());
+          await Future.delayed(Duration(milliseconds: 500));
+          Get.back();
+          Get.offAllNamed(Routes.LOGIN);
+          LocalDB.user = null;
+          LocalDB.removedeviceId();
+          LocalDB.removeToken();
+        },
+        onPresseddenied: () {
+          Get.back();
+        },
+        subtitle: "Anda akan melakukan login ulang untuk mengakses akun ini kembali",
+        textbuttonaccept: "Keluar",
+        title: "Yakin anda keluar?",
+      )
+    );
   }
 
 }

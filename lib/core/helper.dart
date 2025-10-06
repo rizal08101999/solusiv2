@@ -8,6 +8,9 @@ import 'package:solusi/core/local_db.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 
 final log = Logger();
@@ -260,6 +263,68 @@ class HolidayEntity {
         "holiday_name": holidayName,
         "is_national_holiday": isNationalHoliday,
     };
+}
+
+
+/// Request location permission for iOS
+Future<bool> requestIOSLocationPermission() async {
+  if (!Platform.isIOS) return false;
+  
+  var status = await Permission.locationWhenInUse.status;
+  if (status.isDenied) {
+    status = await Permission.locationWhenInUse.request();
+  }
+  
+  return status.isGranted;
+}
+
+/// Request biometric permission for iOS (Face ID/Touch ID)
+Future<bool> requestIOSBiometricPermission() async {
+  if (!Platform.isIOS) return false;
+  
+  var status = await Permission.sensors.status;
+  if (status.isDenied) {
+    status = await Permission.sensors.request();
+  }
+  
+  return status.isGranted;
+}
+
+/// Request tracking permission for iOS (App Tracking Transparency)
+Future<bool> requestIOSTrackingPermission() async {
+  if (!Platform.isIOS) return false;
+  
+  // Check if we can show tracking authorization
+  final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
+  
+  if (status == TrackingStatus.notDetermined) {
+    // Request tracking permission
+    final TrackingStatus status = await AppTrackingTransparency.requestTrackingAuthorization();
+    return status == TrackingStatus.authorized;
+  }
+  
+  return status == TrackingStatus.authorized;
+}
+
+/// Request all necessary permissions for iOS
+Future<Map<String, bool>> requestAllIOSPermissions() async {
+  if (!Platform.isIOS) {
+    return {
+      'location': false,
+      'biometric': false,
+      'tracking': false,
+    };
+  }
+  
+  final bool locationGranted = await requestIOSLocationPermission();
+  final bool biometricGranted = await requestIOSBiometricPermission();
+  final bool trackingGranted = await requestIOSTrackingPermission();
+  
+  return {
+    'location': locationGranted,
+    'biometric': biometricGranted,
+    'tracking': trackingGranted,
+  };
 }
 
 

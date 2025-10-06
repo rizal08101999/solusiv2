@@ -10,6 +10,13 @@
 	<string>Kami memerlukan akses lokasi meskipun aplikasi sedang tidak digunakan.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Lokasi digunakan untuk pelacakan latar belakang dan saat aplikasi aktif.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Aplikasi ini menggunakan data untuk memberikan pengalaman yang lebih personal dan iklan yang relevan.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

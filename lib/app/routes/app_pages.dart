@@ -12,6 +12,7 @@ import 'package:solusi/app/modules/overtime/controller/add_controllers.dart';
 import 'package:solusi/app/modules/overtime/controller/overtime_controller.dart';
 import 'package:solusi/app/modules/overtime/view/component/add.dart';
 import 'package:solusi/app/modules/overtime/view/overtime_views.dart';
+import 'package:solusi/app/modules/profile/views/component/infoaccount.dart';
 import 'package:solusi/app/modules/splash/bindings/splash_binding.dart';
 import 'package:solusi/app/modules/splash/views/splash_view.dart';
 import 'package:solusi/app/modules/task/controller/addtask_controllers.dart';
@@ -191,6 +192,12 @@ class AppPages {
       name: Path.KPI,
       page: () => KpiViews(),
       binding: BindingsBuilder.put(() => KpiController()),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 700),
+    ),
+    GetPage(
+      name: Path.INFOACCOUNT,
+      page: () => Infoaccount(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 700),
     ),

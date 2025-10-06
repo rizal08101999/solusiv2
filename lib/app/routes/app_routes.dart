@@ -26,6 +26,7 @@ abstract class Routes {
   static const KPI = Path.KPI;
   static const DETAILTASK = Path.DETAILTASK;
   static const TRANSFERTASK = Path.TRANSFERTASK;
+  static const INFOACCOUNT = Path.INFOACCOUNT;
 }
 
 abstract class Path {
@@ -53,4 +54,5 @@ abstract class Path {
   static const ADDTASK = '/add-task';
   static const DETAILTASK = '/detail-task';
   static const TRANSFERTASK = '/transfer-task';
+  static const INFOACCOUNT = '/info-account';
 }
