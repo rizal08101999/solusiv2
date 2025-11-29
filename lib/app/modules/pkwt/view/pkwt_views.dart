@@ -9,40 +9,26 @@ class PkwtViews extends GetView<PkwtController> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> kontrakList = [
-      {
-        "id": "1",
-        "tglmulai": "12 Mei 2023",
-        "tglakhir": "12 Februari 2028",
-        "status": "Aktif",
-      },
-      {
-        "id": "2",
-        "tglmulai": "15 April 2023",
-        "tglakhir": "10 Oktober 2028",
-        "status": "Tidak Aktif",
-      },
-    ];
     return SingleChildScrollView(
       child: Column(
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
-            title: "Departement",
-            value: "OPERASIONAL",
+          Obx(() => builditemform(
+            title: "Department",
+            value: controller.getPkwtDataByTitle("Department").toString(),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Bagian",
-            value: "UMUM",
+            value: controller.getPkwtDataByTitle("Bagian").toString(),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Jabatan",
-            value: "Kepala OPERASIONAL",
+            value: controller.getPkwtDataByTitle("Jabatan").toString(),
             isRow: false,
-          ),
+          )),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5,),
             child: Text(
@@ -56,20 +42,24 @@ class PkwtViews extends GetView<PkwtController> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5),
-            child: Column(
-              children: [
-                buildRow(['No', 'Tanggal Mulai', 'Tanggal Akhir', 'Status'], isHeader: true, rowIndex: 0, totalRows: kontrakList.length + 1,flex: 3, fixedWidth: 40),
-                ...List.generate(kontrakList.length, (i) {
-                  final item = kontrakList[i];
-                  return buildRow([
-                    item['id'] ?? '',
-                    item['tglmulai'] ?? '',
-                    item['tglakhir'] ?? '',
-                    item['status'] ?? '',
-                  ], rowIndex: i + 1, totalRows: kontrakList.length + 1, flex: 2, fixedWidth: 40);
-                }),   
-              ],
-            ),
+            child: Obx(() {
+              final kontrakData = controller.getPkwtDataByTitle("Detail Kontrak");
+              final kontrakList = (kontrakData is List) ? kontrakData.cast<Map<String, dynamic>>() : <Map<String, dynamic>>[];
+              return Column(
+                children: [
+                  buildRow(['No', 'Tanggal Mulai', 'Tanggal Akhir', 'Status'], isHeader: true, rowIndex: 0, totalRows: kontrakList.length + 1,flex: 3, fixedWidth: 40),
+                  ...List.generate(kontrakList.length, (i) {
+                    final item = kontrakList[i];
+                    return buildRow([
+                      item['id'] ?? '',
+                      item['tglmulai'] ?? '',
+                      item['tglakhir'] ?? '',
+                      item['status'] ?? '',
+                    ], rowIndex: i + 1, totalRows: kontrakList.length + 1, flex: 2, fixedWidth: 40);
+                  }),   
+                ],
+              );
+            }),
           ),
           SizedBox(height: 10.h),
         ],

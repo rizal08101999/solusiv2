@@ -35,6 +35,7 @@ abstract class AppColors {
   static final Color black9 = HexColor("#292D32");
   static final Color black10 = HexColor("#585757");
   static final Color black11 = HexColor("#5C5C5C");
+  static final Color black12 = HexColor("#0D0D0D");
   static final Color white = HexColor("#FFFFFF");
   static final Color bgriwayat = HexColor('#F7F9FC');
   static final Color grey = HexColor("#546E7A");
@@ -60,6 +61,7 @@ abstract class AppColors {
   static final Color grey22 = HexColor("#ECECEC");
   static final Color grey23 = HexColor("#D1D1D1");
   static final Color grey24 = HexColor("#7C7C7C");
+  static final Color grey25 = HexColor("#F6F6F6");
   static final Color greybutton = HexColor("#546F7A");
   static final Color grey100 = HexColor("#CFD8DC");
   static final Color grey900 = HexColor("#263238");

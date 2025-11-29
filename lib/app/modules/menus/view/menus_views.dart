@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
+import 'package:solusi/app/modules/pkwt/controller/pkwt_controller.dart';
 import 'package:solusi/app/routes/app_pages.dart';
 import 'package:solusi/core/colors.dart';
+import '../../sp/controller/sp_controller.dart';
 import '../controller/menus_controller.dart';
 
 class MenusViews extends GetView<MenusController> {
@@ -48,9 +51,12 @@ class MenusViews extends GetView<MenusController> {
                 buildMenuItem(
                   title: 'Biodata',
                   icon: 'ic_biodata',
-                  onTap: () {
+                  onTap: () async {
                     Get.back();
                     Get.toNamed(Routes.EMPLOYEE, arguments: "1");
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    final c = Get.find<BiodataController>();
+                    c.getPersonalData();
                   },
                   color: [
                     AppColors.gradientbrown,
@@ -60,9 +66,12 @@ class MenusViews extends GetView<MenusController> {
                 buildMenuItem(
                   title: 'PKWT',
                   icon: 'ic_pkwt',
-                  onTap: () {
+                  onTap: () async {
                     Get.back();
                     Get.toNamed(Routes.EMPLOYEE, arguments: "2");
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    final c = Get.find<PkwtController>();
+                    c.getPkwtData();
                   },
                   color: [
                     AppColors.gradientbrown,
@@ -72,9 +81,12 @@ class MenusViews extends GetView<MenusController> {
                 buildMenuItem(
                   title: 'Surat\nPeringatan',
                   icon: 'ic_sp',
-                  onTap: () {
+                  onTap: () async {
                     Get.back();
                     Get.toNamed(Routes.EMPLOYEE, arguments: "3");
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    final c = Get.find<SpController>();
+                    c.getSpData();
                   },
                   color: [
                     AppColors.gradientbrown,

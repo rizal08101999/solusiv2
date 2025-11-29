@@ -144,4 +144,17 @@ class LocalDB {
   static bool get isService {
     return _prefs?.getBool('isBackground') ?? false;
   }
+
+  // Method untuk save dan get user (untuk employee switcher)
+  static void saveUser(UserEntity user) {
+    _prefs?.setString('current_user', jsonEncode(user.toJson()));
+  }
+
+  static UserEntity? getUser() {
+    final userString = _prefs?.getString('current_user');
+    if (userString != null) {
+      return UserEntity.fromJson(jsonDecode(userString));
+    }
+    return null;
+  }
 }

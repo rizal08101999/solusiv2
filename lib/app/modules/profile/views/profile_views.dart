@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:solusi/app/modules/home/controllers/home_controller.dart';
 import 'package:solusi/app/modules/profile/controllers/profile_controller.dart';
 import 'package:solusi/core/colors.dart';
-
-import '../../../routes/app_pages.dart';
+import 'package:solusi/core/local_db.dart';
 
 class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() {
-        return Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(
@@ -112,21 +111,24 @@ class ProfileView extends GetView<ProfileController> {
           ],
         ),
         SizedBox(height: 50.h),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,),
-          child: Column(
-            spacing: 10.h,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildHelpdesk(),
-              SizedBox(height: 10.h),
-            ],
+        Expanded(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20,),
+              child: Column(
+                spacing: 10.h,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildHelpdesk(),
+                  SizedBox(height: 10.h),
+                ],
+              ),
+            ),
           ),
         ),
-      ],);
-      },)
-    );
-  }
+      ],
+    )
+  );}
 
   Widget buildHelpdesk() {
     return Container(
@@ -149,10 +151,20 @@ class ProfileView extends GetView<ProfileController> {
             'Informasi Akun',
             IconsaxPlusBold.warning_2,
             () {
-              Get.toNamed(Routes.INFOACCOUNT);
+              controller.getinfoaccount();
             },
           ),
           Divider(color: AppColors.grey8, height: 1.h),
+          if (LocalDB.user != null && LocalDB.user!.arrayEmployee.length > 1)
+            buildProfileItem(
+              'Ganti Pegawai Aktif',
+              IconsaxPlusBold.people,
+              () {
+                _showEmployeeSwitcher();
+              },
+            ),
+          if (LocalDB.user != null && LocalDB.user!.arrayEmployee.length > 1)
+            Divider(color: AppColors.grey8, height: 1.h),
           buildProfileItem(
             'Versi Aplikasi',
             IconsaxPlusBold.security_safe,
@@ -208,12 +220,143 @@ class ProfileView extends GetView<ProfileController> {
                 ),
               ],
             ),
-            if(title == "Informasi Akun")
+            if(title == "Informasi Akun" || title == "Ganti Pegawai Aktif")
             Icon(
               IconsaxPlusLinear.arrow_right_3,
               size: 20,
               color: AppColors.grey7
             )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showEmployeeSwitcher() {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Pilih Pegawai Aktif',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontFamily: 'SemiBold',
+                    color: AppColors.black,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Get.back(),
+                  icon: Icon(Icons.close, color: AppColors.grey11),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            if (LocalDB.user != null)
+              ...LocalDB.user!.arrayEmployee.map((employee) {
+                final isActive = employee.idEmployee == LocalDB.user!.activeEmployee.idEmployee;
+                return InkWell(
+                  onTap: isActive ? null : () {
+                    final updatedUser = LocalDB.user!.switchActiveEmployee(employee.idEmployee);
+                    LocalDB.saveUser(updatedUser);
+                    LocalDB.user = updatedUser;
+                    final c = Get.find<HomeController>();
+                    c.name.value = LocalDB.user!.activeEmployee.nameEmployee;
+                    controller.loadUserData();
+                    Get.back();
+                    Get.snackbar(
+                      'Berhasil',
+                      'Pegawai aktif berhasil diganti ke ${LocalDB.user!.activeEmployee.idEmployee}',
+                      backgroundColor: AppColors.green2,
+                      colorText: AppColors.white,
+                      snackPosition: SnackPosition.TOP,
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(12.w),
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    decoration: BoxDecoration(
+                      color: isActive ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(
+                        color: isActive ? AppColors.primary : AppColors.grey10,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4.r),
+                          child: CachedNetworkImage(
+                            imageUrl: employee.imageCompany,
+                            width: 40.w,
+                            height: 40.w,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              width: 40.w,
+                              height: 40.w,
+                              color: AppColors.grey10,
+                              child: Icon(Icons.business, size: 20.w, color: AppColors.grey11),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              width: 40.w,
+                              height: 40.w,
+                              color: AppColors.grey10,
+                              child: Icon(Icons.business, size: 20.w, color: AppColors.grey11),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                employee.nameEmployee,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontFamily: 'SemiBold',
+                                  color: AppColors.black,
+                                ),
+                              ),
+                              Text(
+                                employee.numberEmployee,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.grey11,
+                                ),
+                              ),
+                              Text(
+                                employee.nameCompany,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.grey2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (isActive)
+                          Icon(
+                            Icons.check_circle,
+                            color: AppColors.green2,
+                            size: 20.w,
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            SizedBox(height: 16.h),
           ],
         ),
       ),

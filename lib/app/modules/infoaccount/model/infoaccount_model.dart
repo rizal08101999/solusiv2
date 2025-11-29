@@ -1,3 +1,2 @@
 class InfoaccountModel {
-  // TODO: Model
 }

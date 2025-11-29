@@ -1,3 +1,2 @@
 class LeaveModel {
-  // TODO: Model
 }

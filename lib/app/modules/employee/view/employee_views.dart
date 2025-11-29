@@ -5,6 +5,8 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 import 'package:solusi/app/modules/biodata/view/biodata_views.dart';
 import 'package:solusi/app/modules/sp/view/sp_views.dart';
+import 'package:solusi/app/modules/sp/controller/sp_controller.dart';
+import 'package:solusi/app/modules/pkwt/controller/pkwt_controller.dart';
 import '../../../../core/colors.dart';
 import '../../pkwt/view/pkwt_views.dart';
 import '../controller/employee_controller.dart';
@@ -165,10 +167,14 @@ class EmployeeViews extends GetView<EmployeeController> {
                     title: "Biodata Pegawai", 
                     icon: controller.currentpage.value == 1 ? IconsaxPlusBold.profile : IconsaxPlusLinear.profile, 
                     isSelected: (controller.currentpage.value == 1).obs,
-                    onTap: () {
+                    onTap: () async {
                       final c = Get.find<BiodataController>();
                       c.currentindex.value = 0;
                       Get.back();
+                      if (c.personalData.isEmpty) {
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        c.getPersonalData();
+                      }
                       controller.currentpage.value = 1;
                     }
                   ),
@@ -176,8 +182,13 @@ class EmployeeViews extends GetView<EmployeeController> {
                     title: "PKWT Pegawai", 
                     icon: controller.currentpage.value == 2 ? IconsaxPlusBold.teacher : IconsaxPlusLinear.teacher, 
                     isSelected: (controller.currentpage.value == 2).obs,
-                    onTap: () {
+                    onTap: () async {
+                      final c = Get.find<PkwtController>();
                       Get.back();
+                      if (c.pkwtData.isEmpty) {
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        c.getPkwtData();
+                      }
                       controller.currentpage.value = 2;
                     }
                   ),
@@ -185,8 +196,13 @@ class EmployeeViews extends GetView<EmployeeController> {
                     title: "Surat Peringatan", 
                     isSelected: (controller.currentpage.value == 3).obs,
                     icon: controller.currentpage.value == 3 ? IconsaxPlusBold.briefcase : IconsaxPlusLinear.briefcase, 
-                    onTap: () {
+                    onTap: () async {
+                      final c = Get.find<SpController>();
                       Get.back();
+                      if (c.spData.isEmpty) {
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        c.getSpData();
+                      }
                       controller.currentpage.value = 3;
                     }
                   ),

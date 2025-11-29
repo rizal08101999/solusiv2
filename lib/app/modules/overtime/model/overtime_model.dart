@@ -1,3 +1,2 @@
 class OvertimeModel {
-  // TODO: Model
 }

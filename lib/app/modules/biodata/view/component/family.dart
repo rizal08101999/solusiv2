@@ -1,58 +1,36 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:solusi/core/colors.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 
-class Family extends StatelessWidget {
+class Family extends GetView<BiodataController> {
   const Family({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> anakList = [
-      {
-        "nama": "Budi Susanto Gemilangg",
-        "jk": "Laki-laki",
-        "tgl": "20 November 2015",
-      },
-      {
-        "nama": "Dina",
-        "jk": "Perempuan",
-        "tgl": "12 Mei 2023",
-      },
-    ];
-    final List<Map<String, String>> kerabatList = [
-      {
-        "nama": "Kerabat 1",
-        "hubungan": "Sepupu",
-        "telp": "08123456789",
-      },
-      {
-        "nama": "Kerabat 2",
-        "hubungan": "Keponakan",
-        "telp": "08123456789",
-      },
-    ];
-
     return SingleChildScrollView(
       child: Column(
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
+          Obx(() => builditemform(
             title: "Nama Ayah Kandung",
-            value: "Budi Santoso",
+            value: controller.getFamilyDataByTitle("Nama Ayah Kandung").toString(),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Nama Ibu Kandung",
-            value: "Siti Aminah",
+            value: controller.getFamilyDataByTitle("Nama Ibu Kandung").toString(),
             isRow: false,
-          ),
-          builditemform(
-            title: "Nama Suami/Istri",
-            value: "Dewi Lestari",
+          )),
+          Obx(() => builditemform(
+            title: "Nama Suami / Istri",
+            value: controller.getFamilyDataByTitle("Nama Suami / Istri").toString(),
             isRow: false,
-          ),
+          )),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5,),
             child: Text(
@@ -66,19 +44,23 @@ class Family extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5),
-            child: Column(
-              children: [
-                buildRow(['Nama', 'Jenis Kelamin', 'Tanggal Lahir',], isHeader: true, rowIndex: 0, totalRows: anakList.length + 1,flex: 3, fixedWidth: 130, fixedWidth2: 110),
-                ...List.generate(anakList.length, (i) {
-                  final item = anakList[i];
-                  return buildRow([
-                    item['nama'] ?? '',
-                    item['jk'] ?? '',
-                    item['tgl'] ?? '',
-                  ], rowIndex: i + 1, totalRows: anakList.length + 1, flex: 2, fixedWidth: 130, fixedWidth2: 110);
-                }),   
-              ],
-            ),
+            child: Obx(() {
+              final anakData = controller.getFamilyDataByTitle("Data Anak");
+              final anakList = (anakData is List) ? anakData.cast<Map<String, dynamic>>() : <Map<String, dynamic>>[];
+              return Column(
+                children: [
+                  buildRow(['Nama', 'Jenis Kelamin', 'Tanggal Lahir'], isHeader: true, rowIndex: 0, totalRows: anakList.length + 1, fixedWidth: 130, fixedWidth2: 110),
+                  ...List.generate(anakList.length, (i) {
+                    final item = anakList[i];
+                    return buildRow([
+                      item['nama'] ?? '',
+                      item['jk'] ?? '',
+                      item['tgl'] ?? '',
+                    ], isHeader: false, rowIndex: i + 1, totalRows: anakList.length + 1, fixedWidth: 130, fixedWidth2: 110);
+                  }),   
+                ],
+              );
+            }),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 10),
@@ -93,19 +75,23 @@ class Family extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5),
-            child: Column(
-              children: [
-                buildRow(['Nama', 'Hubungan', 'Telp/WA',], isHeader: true, rowIndex: 0, totalRows: kerabatList.length + 1,flex: 3, fixedWidth: 100, fixedWidth2: 100),
-                ...List.generate(kerabatList.length, (i) {
-                  final item = kerabatList[i];
-                  return buildRow([
-                    item['nama'] ?? '',
-                    item['hubungan'] ?? '',
-                    item['telp'] ?? '',
-                  ], rowIndex: i + 1, totalRows: kerabatList.length + 1, flex: 2, fixedWidth: 100, fixedWidth2: 100);
-                }),   
-              ],
-            ),
+            child: Obx(() {
+              final kerabatData = controller.getFamilyDataByTitle("Data Kerabat");
+              final kerabatList = (kerabatData is List) ? kerabatData.cast<Map<String, dynamic>>() : <Map<String, dynamic>>[];
+              return Column(
+                children: [
+                  buildRow(['Nama', 'Hubungan', 'Telp/WA'], isHeader: true, rowIndex: 0, totalRows: kerabatList.length + 1, fixedWidth: 100, fixedWidth2: 100),
+                  ...List.generate(kerabatList.length, (i) {
+                    final item = kerabatList[i];
+                    return buildRow([
+                      item['nama'] ?? '',
+                      item['hubungan'] ?? '',
+                      item['telp'] ?? '',
+                    ], isHeader: false, rowIndex: i + 1, totalRows: kerabatList.length + 1, fixedWidth: 100, fixedWidth2: 100);
+                  }),   
+                ],
+              );
+            }),
           ),
           SizedBox(height: 10.h),
         ],
@@ -143,7 +129,7 @@ class Family extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Container(
-                      width: double.infinity, // Tambahkan ini
+                      width: double.infinity,
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                       decoration: BoxDecoration(
                         color: AppColors.white,
@@ -176,7 +162,7 @@ class Family extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Container(
-                      width: double.infinity, // Tambahkan ini
+                      width: double.infinity,
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                       decoration: BoxDecoration(
                         color: AppColors.white,
@@ -231,174 +217,53 @@ class Family extends StatelessWidget {
         ),
       );
     }
-    
   }
 
-  Widget tableCell(
-    String text, {
-    bool isFirst = false,
-    bool isLast = false,
-    bool isTop = false,
-    bool isBottom = true,
-    bool showRightBorder = true,
-    Color borderColor = Colors.grey,
-    Color? backgroundColor,
-    TextAlign align = TextAlign.center,
-    EdgeInsets padding = const EdgeInsets.all(8),
-  }) {
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border(
-          top: isTop ? BorderSide(color: borderColor) : BorderSide.none,
-          left: isFirst ? BorderSide(color: borderColor) : BorderSide.none,
-          right: showRightBorder
-              ? BorderSide(color: borderColor)
-              : BorderSide.none,
-          bottom: isBottom ? BorderSide(color: borderColor) : BorderSide.none,
-        ),
-      ),
-      child: isTop ?
-      Text(
-        text,
-        textAlign: align,
-        style: TextStyle(
-          fontSize: 13.sp, 
-          fontFamily: 'SemiBold',
-          color: AppColors.black2,
-        ),
-      ) :
-      Text(
-        text, 
-        textAlign: align,
-        style: TextStyle(
-          fontSize: 13.sp, 
-          fontFamily: 'Medium',
-          color: AppColors.grey13,
-        ),
-      ),
-    );
-  }
-
-Widget buildRow(
+  Widget buildRow(
     List<String> cells, {
     bool isHeader = false,
-    int? fixedWidth,
-    int? fixedWidth2,
-    required int flex,
     required int rowIndex,
     required int totalRows,
+    double? fixedWidth,
+    double? fixedWidth2,
   }) {
-    final bool isLast = rowIndex == totalRows - 1;
-
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: List.generate(
-          cells.length,
-          (index) {
-            if (index == 0) {
-              // Kolom pertama selalu fixed width
-              return Container(
-                padding: EdgeInsets.all(8),
-                width: fixedWidth!.toDouble(),
-                decoration: BoxDecoration(
-                  border: isHeader?  
-                  Border(
-                      top: BorderSide(color: AppColors.grey12, width: 0.8),
-                      right: BorderSide(color: AppColors.grey12, width: 0.8),
-                      bottom: BorderSide(color: AppColors.grey12, width: 0.8),
-                      left: BorderSide(color: AppColors.grey12, width: 0.8),
-                    ) :
-                    Border(
-                      top: BorderSide(color: AppColors.grey6),
-                      right: BorderSide(color: AppColors.grey6),
-                      bottom: isLast ? BorderSide(color: AppColors.grey6) : BorderSide.none,
-                      left: index == 0 ? BorderSide(color: AppColors.grey6) : BorderSide.none,
-                    ),
-                  color: isHeader ? AppColors.white : Colors.transparent,
-                ),
-                child: Text(
-                  cells[index],
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: 'Medium',
-                    color: isHeader ? AppColors.black2 : AppColors.grey13,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              );
-            } else if(index == 1){
-              return Container(
-                padding: EdgeInsets.all(8),
-                width: fixedWidth2!.toDouble(),
-                decoration: BoxDecoration(
-                  border: isHeader?  
-                  Border(
-                      top: BorderSide(color: AppColors.grey12, width: 0.8),
-                      right: BorderSide(color: AppColors.grey12, width: 0.8),
-                      bottom: BorderSide(color: AppColors.grey12, width: 0.8),
-                      left: BorderSide(color: AppColors.grey12, width: 0.8),
-                    ) :
-                    Border(
-                      top: BorderSide(color: AppColors.grey6),
-                      right: BorderSide(color: AppColors.grey6),
-                      bottom: isLast ? BorderSide(color: AppColors.grey6) : BorderSide.none,
-                      left: index == 0 ? BorderSide(color: AppColors.grey6) : BorderSide.none,
-                    ),
-                  color: isHeader ? AppColors.white : Colors.transparent,
-                ),
-                child: Center(
-                  child: Text(
-                    cells[index],
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: 'Medium',
-                      color: isHeader ? AppColors.black2 : AppColors.grey13,
-                    ),
-                  ),
-                ),
-              );
-            } else {
-              return Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    border: isHeader ?
-                    Border(
-                      top: BorderSide(color: AppColors.grey12, width: 0.8),
-                      right: BorderSide(color: AppColors.grey12, width: 0.8),
-                      bottom: BorderSide(color: AppColors.grey12, width: 0.8),
-                      left: BorderSide(color: AppColors.grey12, width: 0.8),
-                    ) :
-                    Border(
-                      top: isHeader ? BorderSide(color: AppColors.grey12) : BorderSide(color: AppColors.grey6),
-                      right: isHeader ? BorderSide(color: AppColors.grey12) : BorderSide(color: AppColors.grey6),
-                      bottom: isLast ? BorderSide(color: AppColors.grey12) : BorderSide.none,
-                      left: index == 0 ? BorderSide(color: AppColors.grey12) : BorderSide.none,
-                    ),
-                    color: isHeader ? AppColors.white : Colors.transparent,
-                  ),
-                  child: Align(
-                    alignment: isHeader ? Alignment.center : cells[index].length > 25 ? Alignment.centerLeft : Alignment.center,
-                    child: Text(
-                      cells[index],
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontFamily: 'Medium',
-                        color: isHeader ? AppColors.black2 : AppColors.grey13,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }
+        children: List.generate(cells.length, (index) {
+          final isFirst = index == 0;
+          
+          Widget cellContent = Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: AppColors.grey10, width: 0.8),
+                right: BorderSide(color: AppColors.grey10, width: 0.8),
+                bottom: BorderSide(color: AppColors.grey10, width: 0.8),
+                left: isFirst ? BorderSide(color: AppColors.grey10, width: 0.8) : BorderSide.none,
+              ),
+              color: isHeader ? AppColors.grey10.withOpacity(0.3) : Colors.white,
+            ),
+            child: Text(
+              cells[index],
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: isHeader ? 'SemiBold' : 'Medium',
+                color: AppColors.black2,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
+          
+          if (index == 0 && fixedWidth != null) {
+            return SizedBox(width: fixedWidth, child: cellContent);
+          } else if (index == 1 && fixedWidth2 != null) {
+            return SizedBox(width: fixedWidth2, child: cellContent);
+          } else {
+            return Expanded(child: cellContent);
           }
-        ),
+        }),
       ),
     );
   }
-
-
 }

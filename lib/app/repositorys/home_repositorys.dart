@@ -18,8 +18,7 @@ class HomeRepositorys {
       return await d.dio.post(
         endpoint,
         data: {
-          "id_user" : LocalDB.user!.idUser,
-          "id_employee" : LocalDB.user!.arrayActiveEmployee.idEmployee,
+          "id_employee" : LocalDB.user!.activeEmployee.idEmployee,
           "version": "",
           "device_id": "qwertyuiop"
         },

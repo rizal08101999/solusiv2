@@ -1,4 +1,4 @@
-# Solusi
+    # Solusi
 
 A new Flutter project.
 
@@ -16,6 +16,38 @@ This application requires specific permissions on iOS for full functionality:
 4. **App Tracking Transparency**: Requests user permission for tracking activities
 
 All permissions are properly configured in `ios/Runner/Info.plist` and helper functions are available in `lib/core/helper.dart`.
+
+### Location Service (iOS & Android)
+
+For comprehensive location handling on both platforms, use the `LocationService` class:
+
+```dart
+import 'package:solusi/core/location_service.dart';
+
+// Initialize and request permissions (works on both iOS & Android)
+final locationService = LocationService.instance;
+final initialized = await locationService.initialize();
+
+// Get current position with error handling
+final position = await locationService.getCurrentPosition();
+
+// Check permission status
+final status = await locationService.getPermissionStatus();
+
+// Check if high accuracy is available
+final hasHighAccuracy = status.hasHighAccuracy;
+```
+
+### Testing Location Permissions
+
+Use the `LocationPermissionWidget` for testing and debugging location permissions:
+
+```dart
+import 'package:solusi/app/widgets/location_permission_widget.dart';
+
+// Add to your test/debug screen
+LocationPermissionWidget()
+```
 
 For detailed information about iOS permissions, see [IOS_PERMISSIONS.md](IOS_PERMISSIONS.md).
 

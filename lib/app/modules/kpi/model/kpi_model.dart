@@ -1,3 +1,2 @@
 class KpiModel {
-  // TODO: Model
 }

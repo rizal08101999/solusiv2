@@ -4,21 +4,13 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import '../../../../core/colors.dart';
 import '../controller/schedule_controller.dart';
+import '../model/schedule_model.dart';
 
 class ScheduleViews extends GetView<ScheduleController> {
   const ScheduleViews({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<String> listHari = [
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-    ];
-
     return Scaffold(
       backgroundColor: AppColors.gradient,
       body: Column(
@@ -50,11 +42,12 @@ class ScheduleViews extends GetView<ScheduleController> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: List.generate(6, (index) {
-                  return builditemschedule(day: listHari[index]);
-                },),
-              ),
+              child: Obx(() => Column(
+                children: List.generate(controller.scheduleData.length, (index) {
+                  final schedule = controller.scheduleData[index];
+                  return builditemschedule(schedule: schedule);
+                }),
+              )),
             )
           )
         ],
@@ -62,7 +55,15 @@ class ScheduleViews extends GetView<ScheduleController> {
     );
   }
 
-  Widget builditemschedule({required String day}) {
+  Widget builditemschedule({required ScheduleEntity schedule}) {
+    // Check if schedule is set or not
+    final isScheduleSet = !schedule.data.toLowerCase().contains('belum');
+    
+    // Extract time from schedule data (e.g., "08:00:00 s/d 17:00:00")
+    final timePattern = RegExp(r'(\d{2}:\d{2}):\d{2}\s+s/d\s+(\d{2}:\d{2}):\d{2}');
+    final match = timePattern.firstMatch(schedule.data);
+    final startTime = match?.group(1) ?? '08:00';
+    final endTime = match?.group(2) ?? '17:00';
     return Stack(
       clipBehavior: Clip.none, // biar label bisa "keluar"
       children: [
@@ -83,7 +84,7 @@ class ScheduleViews extends GetView<ScheduleController> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(top: 5),
-            child: Row(
+            child: isScheduleSet ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
@@ -109,7 +110,7 @@ class ScheduleViews extends GetView<ScheduleController> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '08.00',
+                          startTime.replaceAll(':', '.'),
                           style: TextStyle(
                             fontSize: 26.sp,
                             fontFamily: 'Bold',
@@ -153,7 +154,7 @@ class ScheduleViews extends GetView<ScheduleController> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '17.00',
+                          endTime.replaceAll(':', '.'),
                           style: TextStyle(
                             fontSize: 26.sp,
                             fontFamily: 'Bold',
@@ -187,6 +188,25 @@ class ScheduleViews extends GetView<ScheduleController> {
                   ],
                 ),
               ],
+            ) : Center(
+              child: Column(
+                children: [
+                  Icon(
+                    IconsaxPlusLinear.clock,
+                    size: 40.sp,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    schedule.data,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.grey,
+                      fontFamily: 'Medium',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -198,11 +218,11 @@ class ScheduleViews extends GetView<ScheduleController> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
             decoration: BoxDecoration(
-              color: getDayBackgroundColor(day),
+              color: getDayBackgroundColor(schedule.title),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Text(
-              day,
+              schedule.title,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontFamily: 'Medium',

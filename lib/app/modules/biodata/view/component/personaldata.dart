@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:solusi/core/colors.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 
-class Personaldata extends StatelessWidget {
+class Personaldata extends GetView<BiodataController> {
   const Personaldata({super.key});
 
   @override
@@ -12,66 +14,66 @@ class Personaldata extends StatelessWidget {
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
+          Obx(() => builditemform(
             title: "No. KTP",
-            value: "0213543216546",
+            value: controller.getDataByTitle("No KTP"),
             isRow: true,
             title2: "No. KK",
-            value2: "0213543216546",
-          ),
-          builditemform(
+            value2: controller.getDataByTitle("No KK"),
+          )),
+          Obx(() => builditemform(
             title: "Nama",
-            value: "A. Badawi",
+            value: controller.getDataByTitle("Nama"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Panggilan",
-            value: "Badawi",
+            value: controller.getDataByTitle("Panggilan"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Tempat tanggal lahir",
-            value: "Malang, 27 Maret 1993",
+            value: controller.getDataByTitle("TTL"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Jenis Kelamin",
-            value: "Laki-laki",
+            value: controller.getDataByTitle("Jenis Kelamin"),
             isRow: true,
             title2: "Agama",
-            value2: "Islam",
-          ),
-          builditemform(
+            value2: controller.getDataByTitle("Agama"),
+          )),
+          Obx(() => builditemform(
             title: "Domisili",
-            value: "Malang, Jawa Timur",
+            value: controller.getDataByTitle("Domisili") == "-" ? "belum ada domisili" : controller.getDataByTitle("Domisili"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Desa/Dusun",
-            value: "Polowijen",
+            value: controller.getDataByTitle("Desa/Dusun"),
             isRow: true,
             title2: "Kecamatan",
-            value2: "Blimbing",
-          ),
-          builditemform(
+            value2: controller.getDataByTitle("Kecamatan"),
+          )),
+          Obx(() => builditemform(
             title: "Kota/Kab",
-            value: "Kota Malang",
+            value: controller.getDataByTitle("Kota/Kab"),
             isRow: true,
             title2: "Provinsi",
-            value2: "Jawa Timur",
-          ),
-          builditemform(
+            value2: controller.getDataByTitle("Provinsi"),
+          )),
+          Obx(() => builditemform(
             title: "Status Menikah",
-            value: "Menikah",
+            value: controller.getDataByTitle("Status Nikah"),
             isRow: true,
             title2: "Telp",
-            value2: "081234567890",
-          ),
-          builditemform(
+            value2: controller.getDataByTitle("Telp"),
+          )),
+          Obx(() => builditemform(
             title: "Email",
-            value: "badawi@gmail.com",
+            value: controller.getDataByTitle("Email").replaceAll('mailto:', ''),
             isRow: false,
-          ),
+          )),
           SizedBox(height: 10.h),
         ],
       ),

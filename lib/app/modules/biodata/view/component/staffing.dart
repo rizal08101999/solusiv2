@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:solusi/core/colors.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 
-class Staffing extends StatelessWidget {
+class Staffing extends GetView<BiodataController> {
   const Staffing({super.key});
 
   @override
@@ -12,41 +14,41 @@ class Staffing extends StatelessWidget {
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
+          Obx(() => builditemform(
             title: "Perusahaan",
-            value: "KA4 Expedition",
+            value: controller.getStaffingDataByTitle("Perusahaan"),
             isRow: false,
-          ),
-          builditemform(
-            title: "Nomor Induk",
-            value: "KA44172928327199",
+          )),
+          Obx(() => builditemform(
+            title: "No Induk",
+            value: controller.getStaffingDataByTitle("No Induk"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Jenis Pegawai",
-            value: "TETAP",
+            value: controller.getStaffingDataByTitle("Jenis Pegawai"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Jabatan",
-            value: "Kepala OPERASIONAL",
+            value: controller.getStaffingDataByTitle("Jabatan"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Divisi",
-            value: "OPERASIONAL",
+            value: controller.getStaffingDataByTitle("Divisi"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Departement",
-            value: "UMUM",
+            value: controller.getStaffingDataByTitle("Departement"),
             isRow: false,
-          ),
-          builditemform(
-            title: "Penempat Kerja",
-            value: "Wilayah Barat",
+          )),
+          Obx(() => builditemform(
+            title: "Penempatan",
+            value: controller.getStaffingDataByTitle("Penempatan"),
             isRow: false,
-          ),
+          )),
           SizedBox(height: 10.h),
         ],
       ),

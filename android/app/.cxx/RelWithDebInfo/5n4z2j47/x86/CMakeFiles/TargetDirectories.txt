@@ -1,0 +1,2 @@
+C:/Users/VISCODE/Documents/apk/aplikasi/solusi/android/app/.cxx/RelWithDebInfo/5n4z2j47/x86/CMakeFiles/edit_cache.dir
+C:/Users/VISCODE/Documents/apk/aplikasi/solusi/android/app/.cxx/RelWithDebInfo/5n4z2j47/x86/CMakeFiles/rebuild_cache.dir

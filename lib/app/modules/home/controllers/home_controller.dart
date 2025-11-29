@@ -26,8 +26,8 @@ class HomeController extends GetxController {
     datenow.value = DateFormat('dd MMMM yyyy', 'id').format(DateTime.now());
     monthnow.value = DateFormat('MMMM yyyy', 'id').format(DateTime.now());
     final data = await homerepo.getresume();
-    name.value = LocalDB.user!.arrayActiveEmployee.nameEmployee;
-    company.value = LocalDB.user!.arrayActiveEmployee.nameCompany;
+    name.value = LocalDB.user!.activeEmployee.nameEmployee;
+    company.value = LocalDB.user!.activeEmployee.nameCompany;
     if (data.isNotEmpty) {
       // Hilangkan duplikat berdasarkan label
       final Map<String, DashboardEntity> uniqueMap = {
@@ -51,6 +51,32 @@ class HomeController extends GetxController {
     } else {
       debugPrint("gagal mendapatkan data");
       loading.value = false;
+    }
+  }
+
+  void refreshdata() async {
+    final data = await homerepo.getresume();
+    name.value = LocalDB.user!.activeEmployee.nameEmployee;
+    company.value = LocalDB.user!.activeEmployee.nameCompany;
+    if (data.isNotEmpty) {
+      // Hilangkan duplikat berdasarkan label
+      final Map<String, DashboardEntity> uniqueMap = {
+        for (var item in data) item.label: item,
+      };
+      final uniqueList = uniqueMap.values.toList();
+
+      // Pisahkan berdasarkan label mengandung "absen"
+      final filteredabsensi = uniqueList
+          .where((item) => item.label.toLowerCase().contains('absen'))
+          .toList();
+
+      final filteredresume = uniqueList
+          .where((item) => !item.label.toLowerCase().contains('absen'))
+          .toList();
+      absensi.assignAll(filteredabsensi);
+      resume.assignAll(filteredresume);
+    } else {
+      debugPrint("gagal mendapatkan data");
     }
   }
 

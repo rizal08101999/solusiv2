@@ -1,3 +1,2 @@
 class EmployeeModel {
-  // TODO: Model
 }

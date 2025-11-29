@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:solusi/core/colors.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 
-class Bank extends StatelessWidget {
+class Bank extends GetView<BiodataController> {
   const Bank({super.key});
 
   @override
@@ -12,16 +14,16 @@ class Bank extends StatelessWidget {
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
+          Obx(() => builditemform(
             title: "Nama Bank",
-            value: "Bank Indonesia",
+            value: controller.getBankDataByTitle("Nama Bank"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "No Rekening",
-            value: "217119293839201",
+            value: controller.getBankDataByTitle("No Rekening"),
             isRow: false,
-          ),
+          )),
           SizedBox(height: 10.h),
         ],
       ),

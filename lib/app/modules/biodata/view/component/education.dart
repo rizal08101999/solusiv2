@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:solusi/core/colors.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 
-class Education extends StatelessWidget {
+class Education extends GetView<BiodataController> {
   const Education({super.key});
 
   @override
@@ -12,50 +14,50 @@ class Education extends StatelessWidget {
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
+          Obx(() => builditemform(
             title: "Pendidikan Terakhir",
-            value: "SD",
+            value: controller.getEducationDataByTitle("Pendidikan Terakhir"),
             isRow: true,
             title2: "Gelar",
-            value2: "S1",
-          ),
-          builditemform(
+            value2: controller.getEducationDataByTitle("Gelas"),
+          )),
+          Obx(() => builditemform(
             title: "Nilai IPK/Rapor",
-            value: "4.00",
+            value: controller.getEducationDataByTitle("Nilai IPK / Nilai Rapor"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Nama Instansi",
-            value: "Universitas Negeri Malang",
+            value: controller.getEducationDataByTitle("Nama Sekolah"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Fakultas",
-            value: "Fakultas Teknologi Informasi",
+            value: controller.getEducationDataByTitle("Fakultas"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Jurusan",
-            value: "Teknik Informatika",
+            value: controller.getEducationDataByTitle("Jurusan"),
             isRow: false,
-          ),
-          builditemform(
-            title: "Kota/Kab",
-            value: "Malang,",
-            isRow: true,
-            title2: "Provinsi",
-            value2: "Jawa Timur",
-          ),
-          builditemform(
+          )),
+          // Obx(() => builditemform(
+          //   title: "Kota/Kab",
+          //   value: controller.getEducationDataByTitle("Kota/Kab"),
+          //   isRow: true,
+          //   title2: "Provinsi",
+          //   value2: controller.getEducationDataByTitle("Provinsi"),
+          // )),
+          Obx(() => builditemform(
             title: "Konsentrasi",
-            value: "Bidang IT",
+            value: controller.getEducationDataByTitle("Konsentrasi"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Alamat Instansi",
-            value: "Jl. Lingkar Maskumambang No.1, Sukorame, Kec. Mojoroto, Kota Kediri, Jawa Timur 64119, Indonesia.",
+            value: controller.getEducationDataByTitle("Alamat Instansi"),
             isRow: false,
-          ),
+          )),
           SizedBox(height: 10.h),
         ],
       ),

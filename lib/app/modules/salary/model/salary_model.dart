@@ -1,3 +1,2 @@
 class SalaryModel {
-  // TODO: Model
 }

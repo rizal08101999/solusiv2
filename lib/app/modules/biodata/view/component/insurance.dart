@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:solusi/core/colors.dart';
+import 'package:solusi/app/modules/biodata/controller/biodata_controller.dart';
 
-class Insurance extends StatelessWidget {
+class Insurance extends GetView<BiodataController> {
   const Insurance({super.key});
 
   @override
@@ -12,26 +14,26 @@ class Insurance extends StatelessWidget {
         spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builditemform(
+          Obx(() => builditemform(
             title: "BPJS Kesehatan",
-            value: "1234567890",
+            value: controller.getInsuranceDataByTitle("BPJS Kesehatan"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "BPJS Ketenagakerjaan",
-            value: "0987654321",
+            value: controller.getInsuranceDataByTitle("BPJS Ketenagakerjaan"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "Asuransi Lain",
-            value: "Asuransi XYZ",
+            value: controller.getInsuranceDataByTitle("Asuransi Lain"),
             isRow: false,
-          ),
-          builditemform(
+          )),
+          Obx(() => builditemform(
             title: "No. Keanggotaan",
-            value: "1234567890",
+            value: controller.getInsuranceDataByTitle("No. Keanggotaan"),
             isRow: false,
-          ),
+          )),
           SizedBox(height: 10.h),
         ],
       ),

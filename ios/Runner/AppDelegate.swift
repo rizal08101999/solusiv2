@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import AppTrackingTransparency
+import GoogleMaps
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -28,6 +29,9 @@ import AppTrackingTransparency
       }
     })
 
+    // Configure Google Maps API Key
+    GMSServices.provideAPIKey("AIzaSyABV6N9JotVj_HToyHxImzMQaZ855SbDCA")
+    
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

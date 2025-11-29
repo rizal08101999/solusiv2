@@ -38,6 +38,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyABV6N9JotVj_HToyHxImzMQaZ855SbDCA" />
+        <meta-data
+            android:name="com.google.android.gms.maps.Renderer"
+            android:value="latest" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

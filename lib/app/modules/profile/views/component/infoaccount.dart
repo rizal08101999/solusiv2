@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:solusi/app/widgets/loadingdata.dart';
 import 'package:solusi/core/colors.dart';
 
 import '../../controllers/profile_controller.dart';
@@ -79,38 +80,47 @@ class Infoaccount extends GetView<ProfileController> {
                     ),
                   ],
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      builditemaccount(title: "Nama", subtitle: "A.Badawi"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(color: AppColors.grey8),
+                child: Obx(() {
+                  if (controller.loading.isTrue) {
+                    return Column(
+                      spacing: 10,
+                      children: List.generate(5, (index) => BuildLoading(height: 50,),),
+                    );
+                  } else {
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          builditemaccount(title: "Nama", subtitle: controller.profileData.value?.name ?? ""),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(color: AppColors.grey8),
+                          ),
+                          builditemaccount(title: "Email", subtitle: controller.profileData.value?.email ?? ""),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(color: AppColors.grey8),
+                          ),
+                          builditemaccount(title: "Username", subtitle: controller.username.value),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(color: AppColors.grey8),
+                          ),
+                          builditemaccount(title: "No telepon", subtitle: controller.profileData.value?.phoneNumber ?? ""),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(color: AppColors.grey8),
+                          ),
+                          builditemaccount(
+                            title: "Alamat",
+                            subtitle:
+                                controller.profileData.value?.address ?? "",
+                          ),
+                        ],
                       ),
-                      builditemaccount(title: "Email", subtitle: "badawi93@gmail.com"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(color: AppColors.grey8),
-                      ),
-                      builditemaccount(title: "Username", subtitle: "abadawi"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(color: AppColors.grey8),
-                      ),
-                      builditemaccount(title: "No telepon", subtitle: "089767889088"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(color: AppColors.grey8),
-                      ),
-                      builditemaccount(
-                        title: "Alamat",
-                        subtitle:
-                            "Perum Ruvania no. 9L Jl. Kesana-kemari Desa. Bendo Kecamatan Pare Kabupaten Kediri",
-                      ),
-                    ],
-                  ),
-                ),
+                    );
+                  }
+                },)
               ),
             ),
           ),

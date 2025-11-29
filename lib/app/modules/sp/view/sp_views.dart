@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:solusi/core/colors.dart';
 import '../controller/sp_controller.dart';
+import '../model/sp_model.dart';
 
 class SpViews extends GetView<SpController> {
   const SpViews({super.key});
@@ -13,19 +14,21 @@ class SpViews extends GetView<SpController> {
 
   @override
   Widget build(BuildContext context) {
+    print(  controller.spData.length);
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 10.h),
-        child: Column(
-          children: List.generate(5, (index) {
-            return builditemsp();
-          },),
-        ),
+        child: Obx(() => Column(
+          children: List.generate(controller.spData.length, (index) {
+            final sp = controller.spData[index];
+            return builditemsp(sp);
+          }),
+        )),
       )
     );
   }
 
-  Widget builditemsp() {
+  Widget builditemsp(SpEntity sp) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
@@ -52,7 +55,7 @@ class SpViews extends GetView<SpController> {
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
-              "Surat Peringatan",
+              "SP",
               style: TextStyle(
                 fontSize: 12.sp,
                 fontFamily: 'Medium',
@@ -69,7 +72,7 @@ class SpViews extends GetView<SpController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Surat Teguran Tertulis', 
+                      sp.jenis, 
                       style: TextStyle(
                         fontSize: 16.sp, 
                         fontFamily: 'SemiBold',
@@ -77,7 +80,7 @@ class SpViews extends GetView<SpController> {
                       )
                     ),
                     Text(
-                      'Sehubungan dengan hasil evaluasi terhadap pelaksanaan kegiatan di lingkungan [Nama Instansi/Perusahaan], ditemukan adanya ketidaksesuaian dalam penggunaan anggaran yang mengindikasikan kurangnya upaya pengendalian biaya serta pengiritan sumber daya.', 
+                      sp.keterangan, 
                       style: TextStyle(
                         fontSize: 13.sp, 
                         fontFamily: 'DMSans',
@@ -114,7 +117,7 @@ class SpViews extends GetView<SpController> {
               ),
               SizedBox(width: 5.w),
               Text(
-                '07 Agustus 2025 s/d 31 Agustus 2025',
+                sp.berlaku,
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: AppColors.black2

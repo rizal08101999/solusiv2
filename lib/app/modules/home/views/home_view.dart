@@ -42,14 +42,14 @@ class HomeView extends GetView<HomeController> {
                             color: AppColors.white
                           ),
                         ),
-                        Text(
-                          "A.Badawi",
+                        Obx(() => Text(
+                          controller.name.value,
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontFamily: 'Bold',
                             color: AppColors.white
                           ),
-                        ),
+                        )),
                       ],
                     ),
                     CircleAvatar(

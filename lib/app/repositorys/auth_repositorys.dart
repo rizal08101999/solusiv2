@@ -5,6 +5,9 @@ import 'package:solusi/core/helper.dart';
 
 import '../../core/local_db.dart';
 import '../modules/login/models/login_models.dart';
+import '../modules/profile/models/profile_models.dart';
+
+import 'package:dio/dio.dart' as dioo;
 
 class AuthRepositorys {
   String codeotp = "";
@@ -55,6 +58,33 @@ class AuthRepositorys {
       msgfail = "Permintaan gagal diproses. Coba beberapa saat lagi.";
       result = true;
     }
+    return result;
+  }
+
+  Future<ProfileModels?> getProfileData() async {
+    ProfileModels? result;
+    const endpoint = "profile/get_data";
+
+    Future<dioo.Response> getData() async {
+      return await d.dio.post(
+        endpoint,
+        data: {
+          "id_employee" : LocalDB.user!.activeEmployee.idEmployee,
+          "device_id": "qwertyuiop",
+        },
+        options: dioo.Options(extra: {'withCredential': true}),
+      );
+    }
+
+    Future<void> handleResponseData(dioo.Response response) async {
+      final json = response.data is String ? jsonDecode(response.data) : response.data;
+      if (!json['error']) {
+        result = ProfileModels.fromJson(json);
+      }
+    }
+
+    var response = await getData();
+    await handleResponseData(response);
     return result;
   }
 }
