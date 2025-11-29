@@ -1,8 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:solusi/core/colors.dart';
 import '../controller/history_controller.dart';
 
@@ -106,57 +108,81 @@ class HistoryViews extends GetView<HistoryController> {
                         height: 90,
                         child: Obx(() {
                           final activeDate = controller.activeDate.value;
-                          return ListView.builder(
-                            controller: controller.scrollController,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.datesInMonth.length,
-                            itemBuilder: (context, index) {
-                              final date = controller.datesInMonth[index];
-                              final isActive = date.day == activeDate.day &&
-                                  date.month == activeDate.month &&
-                                  date.year == activeDate.year;
-                              
-                              return GestureDetector(
-                                onTap: () => controller.setActiveDate(date),
-                                child: Container(
-                                  width: controller.itemWidth,
-                                  margin: const EdgeInsets.symmetric(horizontal: 6),
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: isActive ? AppColors.grey16 : AppColors.white,
-                                    borderRadius: BorderRadius.circular(999),
-                                    border: Border.all(color: AppColors.grey6),
-                                  ),
-                                  child: Column(
-                                    spacing: 3,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        controller.getDayInitial(date),
-                                        style: isActive ?
-                                        TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 14
-                                        ) :
-                                        TextStyle(
-                                          color: AppColors.grey17,
-                                          fontSize: 14
-                                        ),
+                          if (controller.loading.isTrue) {
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Row(
+                                  spacing: 10,
+                                  children: List.generate(10, (index) {
+                                    return Container(
+                                      height: 80,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(999)
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${date.day}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: 'SemiBold',
-                                          color: AppColors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    );
+                                  },),
                                 ),
-                              );
-                            },
+                              ),
+                            );
+                          }
+                          return FadeIn(
+                            duration: Duration(milliseconds: 650),
+                            child: ListView.builder(
+                              controller: controller.scrollController,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.datesInMonth.length,
+                              itemBuilder: (context, index) {
+                                final date = controller.datesInMonth[index];
+                                final isActive = date.day == activeDate.day &&
+                                    date.month == activeDate.month &&
+                                    date.year == activeDate.year;
+                                
+                                return GestureDetector(
+                                  onTap: () => controller.setActiveDate(date),
+                                  child: Container(
+                                    width: controller.itemWidth,
+                                    margin: const EdgeInsets.symmetric(horizontal: 6),
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: isActive ? AppColors.grey16 : AppColors.white,
+                                      borderRadius: BorderRadius.circular(999),
+                                      border: Border.all(color: AppColors.grey6),
+                                    ),
+                                    child: Column(
+                                      spacing: 3,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          controller.getDayInitial(date),
+                                          style: isActive ?
+                                          TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 14
+                                          ) :
+                                          TextStyle(
+                                            color: AppColors.grey17,
+                                            fontSize: 14
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          '${date.day}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'SemiBold',
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           );
                         }),
                       ),

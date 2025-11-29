@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.light,
+        statusBarColor: Colors.transparent
       ),
       child: ScreenUtilInit(
         designSize: const Size(450 * .95, 869 * .95),

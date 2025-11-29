@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solusi/app/repositorys/auth_repositorys.dart';
+import 'package:solusi/app/widgets/pop_up_notifikasi.dart';
 
 import '../../../routes/app_pages.dart';
 
@@ -18,6 +19,13 @@ class LoginController extends GetxController {
       if (value == true) {
         debugPrint("gagal");
         loading.value = false;
+        Get.dialog(
+          PopUpNotifikasi(
+            status: true.obs, 
+            title: "Gagal Login", 
+            msg: authrepo.msgfail
+          )
+        );
       } else {
         loading.value = false;
         Future.delayed(const Duration(milliseconds: 200)).then((value) => Get.offAllNamed(Routes.DASHBOARD));

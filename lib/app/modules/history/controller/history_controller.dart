@@ -15,24 +15,27 @@ class HistoryController extends GetxController {
   final listhistory = <HistoryModel>[].obs;
   final monthnow = "".obs;
   final showFilterForm = false.obs;
+  final loading = false.obs;
   final startDate = Rxn<DateTime>();
   final endDate = Rxn<DateTime>();
   final scheduleabsencerepo = ScheduleAbsenceRepository();
 
   late List<DateTime> datesInMonth;
-  late final ScrollController scrollController;
+  ScrollController? scrollController;
 
   final double itemWidth = 60.0;
 
   @override
   void onInit() {
     super.onInit();
+    datesInMonth = _generateDatesInMonth(today);
     Future.delayed(Duration.zero, () {
       initialiaze();
     });
   }
 
   void initialiaze() async {
+    loading.value = true;
     Get.dialog(PopUpLoad());
     scrollController = ScrollController();
     datesInMonth = _generateDatesInMonth(today);
@@ -44,6 +47,13 @@ class HistoryController extends GetxController {
     await fetchFilteredHistoryData(firstDayOfMonth, lastDayOfMonth);
     
     Get.back();
+    loading.value = false;
+    
+    // Scroll to today's date after everything is loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollToCenter(today);
+    });
+    
     print("done");
   }
 
@@ -68,6 +78,8 @@ class HistoryController extends GetxController {
   }
 
   void scrollToCenter(DateTime date) {
+    if (scrollController == null || !scrollController!.hasClients) return;
+    
     final index = datesInMonth.indexWhere(
       (d) => d.day == date.day && d.month == date.month && d.year == date.year,
     );
@@ -75,26 +87,14 @@ class HistoryController extends GetxController {
     if (index == -1) return;
 
     final screenWidth = Get.width;
-    final listViewPadding = 30.0; // horizontal padding from view (15*2)
+    final listViewPadding = 30.0;
     final availableWidth = screenWidth - listViewPadding;
-    final itemTotalWidth = itemWidth + 12; // itemWidth + margin (6*2)
-    final itemsVisibleOnScreen = (availableWidth / itemTotalWidth).floor();
-    final halfVisibleItems = itemsVisibleOnScreen / 2;
-    
-    // For filtered range, always scroll to show the start date
-    final isFiltered = startDate.value != null && endDate.value != null;
-    
-    if (!isFiltered) {
-      // Original logic for normal month view
-      if (index < halfVisibleItems || index >= datesInMonth.length - halfVisibleItems) {
-        return;
-      }
-    }
+    final itemTotalWidth = itemWidth + 12;
     
     final targetOffset = (index * itemTotalWidth) - (availableWidth / 2) + (itemTotalWidth / 2);
     final maxOffset = (datesInMonth.length * itemTotalWidth) - availableWidth;
 
-    scrollController.animateTo(
+    scrollController!.animateTo(
       max(0, min(targetOffset, maxOffset)),
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,

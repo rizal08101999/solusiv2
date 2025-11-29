@@ -62,19 +62,37 @@ class ScheduleAbsenceRepository {
 
     Future<void> handleResponse(dioo.Response response) async {
       final rawJson = response.data is String ? jsonDecode(response.data) : response.data;
-      final dataList = rawJson["data"] as List;
+
+      // Jika API error, langsung lemparkan ke handleApiResponse
+      if (rawJson["error"] == true) {
+        await handleApiResponse<List<AbsensiModel>>(
+          statusCode: response.statusCode,
+          dataKey: null,
+          json: {"error": true, "error_msg": rawJson["error_msg"]},
+          fromJson: (data) async => [],
+          onSuccess: (data) async => result = [],
+          onFail: (msg) async => result = [],
+          defaultErrorMsg: rawJson["error_msg"] ?? "Gagal mendapatkan data absensi",
+        );
+        return;
+      }
+
+      // Jika tidak error → proses seperti biasa
+      final dataList = (rawJson["data"] ?? []) as List;
       final first = dataList.isNotEmpty ? dataList.first : null;
       final extracted = first?["data_absensi"] ?? [];
+
       await handleApiResponse<List<AbsensiModel>>(
         statusCode: response.statusCode,
-        dataKey: null, // Tidak perlu pakai key, kita sudah extract manual
-        json: {"data": extracted}, // triknya: bungkus jadi Map agar handler tetap aman
+        dataKey: null,
+        json: {"data": extracted},
         fromJson: (data) async => (data as List).map((e) => AbsensiModel.fromJson(e)).toList(),
         onSuccess: (data) async => result = data,
         onFail: (msg) async => result = [],
         defaultErrorMsg: "Gagal mendapatkan data absensi",
       );
     }
+
 
     var response = await getData();
     await handleResponse(response);
